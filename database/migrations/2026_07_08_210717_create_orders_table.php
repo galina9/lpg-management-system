@@ -21,9 +21,15 @@ return new class extends Migration
               ->constrained()
               ->cascadeOnDelete();
 
-        $table->string('customer_name');
+        $table->foreignId('customer_id')
+              ->nullable()
+              ->constrained()
+              ->nullOnDelete();
 
-        $table->string('customer_phone');
+        $table->foreignId('driver_id')
+              ->nullable()
+              ->constrained('users')
+              ->nullOnDelete();
 
         $table->decimal('quantity',10,2);
 
@@ -33,13 +39,10 @@ return new class extends Migration
 
         $table->date('order_date');
 
-        $table->enum('status',[
-            'Pending',
-            'Completed',
-            'Cancelled'
-        ])->default('Pending');
+        $table->string('status')->default('Pending');
 
         $table->timestamps();
+
 
     });
 }

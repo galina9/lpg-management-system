@@ -15,11 +15,7 @@
       Add Product
       </a>
    </div>
-   @if(session('success'))
-   <div class="alert alert-success">
-      {{ session('success') }}
-   </div>
-   @endif
+
    <div class="card shadow-sm">
       <div class="card-body">
          <form method="GET" action="{{ route('products.index') }}">
@@ -84,8 +80,8 @@
                      <td>{{ $product->code }}</td>
                      <td>{{ $product->gas_type }}</td>
                      <td>{{ $product->unit }}</td>
-                     <td>${{ number_format($product->purchase_price,2) }}</td>
-                     <td>${{ number_format($product->sale_price,2) }}</td>
+                     <td>{{ number_format($product->purchase_price,2) }}AMD</td>
+                     <td>{{ number_format($product->sale_price,2) }} AMD</td>
                      <td>{{ $product->stock }}</td>
                      <td>
                         @if($product->status=='active')

@@ -29,8 +29,9 @@ return new class extends Migration
         // Unit
         $table->enum('unit', [
             'Liter',
-            'Kg'
-        ])->default('Liter');
+            'Kg',
+            'Cylinder'
+        ])->default('Cylinder');
 
         // Prices
         $table->decimal('purchase_price', 10, 2);

@@ -26,16 +26,6 @@
 
     </div>
 
-    @if(session('success'))
-
-        <div class="alert alert-success">
-
-            {{ session('success') }}
-
-        </div>
-
-    @endif
-
     <div class="card shadow-sm">
 
         <div class="card-body">
@@ -97,6 +87,8 @@
                             <th>Phone</th>
 
                             <th>Product</th>
+                            
+                            <th>Driver</th>
 
                             <th>Quantity</th>
 
@@ -127,14 +119,30 @@
                             <td>{{ $order->order_number }}</td>
 
                             <td>{{ $order->customer_name }}</td>
+                            <td>
 
+                            @if($order->driver)
+
+                                {{ $order->driver->name }}
+
+                            @else
+
+                                <span class="text-muted">
+
+                                    Not Assigned
+
+                                </span>
+
+                            @endif
+
+                        </td>
                             <td>{{ $order->customer_phone }}</td>
 
                             <td>{{ $order->product->name }}</td>
 
                             <td>{{ $order->quantity }}</td>
 
-                            <td>${{ number_format($order->total_price,2) }}</td>
+                            <td>{{ number_format($order->total_price, 0, '.', ' ') }} AMD</td>
 
                             <td>
 
