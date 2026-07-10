@@ -1,0 +1,640 @@
+/* ==========================================================
+   LPG ERP ADMIN
+========================================================== */
+
+:root{
+    --navbar-height:70px;
+    --sidebar-width:260px;
+
+    --primary:#2563eb;
+    --sidebar-bg:#111827;
+    --sidebar-hover:#1f2937;
+
+    --body-bg:#f4f6f9;
+
+    --text:#111827;
+    --text-light:#6b7280;
+
+    --white:#ffffff;
+
+    --border:#e5e7eb;
+
+    --transition:.30s;
+}
+
+/* ========================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body{
+    height:100%;
+    overflow-x:hidden;
+    background:var(--body-bg);
+    font-family:'Inter',sans-serif;
+}
+
+/* ========================================================== */
+/* NAVBAR */
+/* ========================================================== */
+
+.navbar{
+
+    height:var(--navbar-height);
+
+    background:#fff;
+
+    border-bottom:1px solid var(--border);
+
+    box-shadow:0 2px 12px rgba(0,0,0,.04);
+
+    padding:0 20px;
+
+    z-index:1050;
+
+}
+
+.navbar .container-fluid{
+
+    height:100%;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.navbar-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+}
+
+.logo{
+
+    font-size:24px;
+
+    font-weight:700;
+
+    color:var(--primary);
+
+    text-decoration:none;
+
+}
+
+.logo:hover{
+
+    color:var(--primary);
+
+}
+
+.menu-toggle{
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#f8fafc;
+
+    transition:var(--transition);
+
+}
+
+.menu-toggle:hover{
+
+    background:#eef2ff;
+
+}
+
+.menu-toggle i{
+
+    font-size:24px;
+
+}
+
+.navbar-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+}
+
+.icon-btn{
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#f8fafc;
+
+    position:relative;
+
+}
+
+.notification-badge{
+
+    position:absolute;
+
+    top:-5px;
+
+    right:-5px;
+
+    width:18px;
+
+    height:18px;
+
+    border-radius:50%;
+
+    background:red;
+
+    color:#fff;
+
+    font-size:11px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+/* ========================================================== */
+/* LAYOUT */
+/* ========================================================== */
+
+.layout-wrapper{
+    display:flex;
+    margin-top:var(--navbar-height);
+}
+
+/* ========================================================== */
+/* SIDEBAR */
+/* ========================================================== */
+
+.sidebar{
+    position:fixed;
+    top:var(--navbar-height);
+    left:0;
+
+    width:260px;
+    height:calc(100vh - var(--navbar-height));
+
+    background:var(--sidebar-bg);
+
+    overflow-y:auto;
+
+    transition:.3s;
+
+    z-index:1040;
+}
+.sidebar-text{
+    color: #fff;
+}
+.sidebar-header{
+
+    height:90px;
+
+    display:flex;
+
+    align-items:center;
+
+    padding:0 20px;
+
+    gap:15px;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+.sidebar-logo{
+
+    width:50px;
+
+    height:50px;
+
+    border-radius:12px;
+
+    background:#2563eb;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:24px;
+
+}
+
+.sidebar-title h4{
+
+    margin:0;
+
+    font-size:18px;
+
+    color:#fff;
+
+}
+
+.sidebar-title small{
+
+    color:#9ca3af;
+
+}
+
+.sidebar-menu{
+
+    list-style:none;
+
+    padding:20px 12px;
+
+}
+
+.menu-title{
+
+    color:#6b7280;
+
+    font-size:11px;
+
+    letter-spacing:1px;
+
+    margin:18px 12px 8px;
+
+}
+
+.sidebar-menu li{
+
+    margin-bottom:4px;
+
+}
+
+.sidebar-menu a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    color:#d1d5db;
+
+    text-decoration:none;
+
+    padding:13px 15px;
+
+    border-radius:12px;
+
+    transition:var(--transition);
+
+}
+
+.sidebar-menu a:hover{
+
+    background:var(--sidebar-hover);
+
+    color:#fff;
+
+}
+
+.sidebar-menu a.active{
+
+    background:var(--primary);
+
+    color:#fff;
+
+}
+
+.sidebar-menu i{
+
+    font-size:20px;
+
+    min-width:24px;
+
+}
+
+/* ========================================================== */
+/* MAIN */
+/* ========================================================== */
+
+#main-content{
+
+    margin-left:var(--sidebar-width);
+
+    width:calc(100% - var(--sidebar-width));
+
+    transition:var(--transition);
+
+}
+/*#main-content{
+
+    margin-left:260px;
+
+    width:calc(100% - 260px);
+
+    transition:.3s;
+
+}*/
+
+.page-wrapper{
+
+    padding:30px;
+
+}
+
+/* ========================================================== */
+/* CARDS */
+/* ========================================================== */
+
+.card{
+
+    border:none;
+
+    border-radius:14px;
+
+    box-shadow:0 4px 15px rgba(0,0,0,.05);
+
+    transition:.25s;
+
+}
+
+.card:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+}
+/* ==========================================================
+   DESKTOP COLLAPSE
+========================================================== */
+
+.layout-wrapper.sidebar-collapsed .sidebar{
+
+    left:calc(var(--sidebar-width) * -1);
+
+}
+
+.layout-wrapper.sidebar-collapsed #main-content{
+
+    margin-left:0;
+
+    width:100%;
+
+}
+/*.layout-wrapper.sidebar-collapsed .sidebar{
+
+    left:-260px;
+
+}
+
+.layout-wrapper.sidebar-collapsed #main-content{
+
+    margin-left:0;
+
+    width:100%;
+
+}*/
+
+/* ==========================================================
+   TABLES
+========================================================== */
+
+.table{
+
+    background:#fff;
+
+    border-radius:14px;
+
+    overflow:hidden;
+
+}
+
+.table thead{
+
+    background:#f8fafc;
+
+}
+
+.table thead th{
+
+    border:none;
+
+    font-weight:600;
+
+    color:#374151;
+
+    padding:15px;
+
+}
+
+.table tbody td{
+
+    vertical-align:middle;
+
+    padding:14px 15px;
+
+}
+
+/* ==========================================================
+   FORMS
+========================================================== */
+
+.form-control,
+.form-select{
+
+    border-radius:10px;
+
+    min-height:45px;
+
+    border:1px solid #d1d5db;
+
+}
+
+.form-control:focus,
+.form-select:focus{
+
+    box-shadow:none;
+
+    border-color:var(--primary);
+
+}
+
+/* ==========================================================
+   BUTTONS
+========================================================== */
+
+.btn{
+
+    border-radius:10px;
+
+    min-height:42px;
+
+}
+
+.btn-primary{
+
+    background:var(--primary);
+
+    border-color:var(--primary);
+
+}
+
+/* ==========================================================
+   SCROLLBAR
+========================================================== */
+
+.sidebar::-webkit-scrollbar{
+
+    width:6px;
+
+}
+
+.sidebar::-webkit-scrollbar-thumb{
+
+    background:#374151;
+
+    border-radius:20px;
+
+}
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media(max-width:1250px){
+
+    .sidebar{
+
+        left:-260px;
+
+        z-index:2000;
+
+    }
+
+    .sidebar.show{
+
+        left:0;
+
+    }
+
+    #main-content{
+
+        margin-left:0;
+
+        width:100%;
+
+    }
+
+    .page-wrapper{
+
+        padding:20px;
+
+    }
+
+}
+
+/* ==========================================================
+   SMALL DEVICES
+========================================================== */
+
+@media(max-width:768px){
+
+    .navbar{
+
+        padding:0 10px;
+
+    }
+
+    .logo{
+
+        font-size:20px;
+
+    }
+
+    .sidebar{
+
+        width:250px;
+
+    }
+
+    .page-wrapper{
+
+        padding:15px;
+
+    }
+
+    .navbar-right{
+
+        gap:8px;
+
+    }
+
+    .notification-badge{
+
+        width:16px;
+
+        height:16px;
+
+        font-size:10px;
+
+    }
+
+}
+
+/* ==========================================================
+   UTILITIES
+========================================================== */
+
+.shadow-card{
+
+    box-shadow:0 5px 20px rgba(0,0,0,.05);
+
+}
+
+.rounded-xl{
+
+    border-radius:14px;
+
+}
+
+.text-muted-small{
+
+    font-size:13px;
+
+    color:#6b7280;
+
+}
+
+.cursor-pointer{
+
+    cursor:pointer;
+
+}
+
+.transition{
+
+    transition:.3s;
+
+}
