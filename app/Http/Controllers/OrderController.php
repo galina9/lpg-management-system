@@ -6,12 +6,22 @@ use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Customer;
+use App\Services\OrderService;
 
 class OrderController extends Controller
 {
+    protected OrderService $orderService;
+
+    public function __construct(OrderService $orderService)
+    {
+        $this->orderService = $orderService;
+    }
+
+
     public function index(Request $request)
     {
-       $query = Order::with(['product','driver']);
+       $query = Order::with(['customer','product','driver']);
 
         if ($request->filled('search')) {
             $query->where('order_number', 'like', '%' . $request->search . '%')
@@ -57,15 +67,13 @@ class OrderController extends Controller
         ]);
 
         $product = Product::findOrFail($request->product_id);
-        if ($product->stock < $request->quantity) {
-
-            return back()
-                ->withInput()
-                ->with('error',
-                    'Not enough stock. Available: '.$product->stock
-                );
-
-        }
+        if (!$this->orderService->hasEnoughStock($product, $request->quantity)) {
+                return back()
+                    ->withInput()
+                    ->withErrors([
+                        'quantity' => 'Not enough stock available.'
+                    ]);
+            }
         Order::create([
             'order_number'   => 'ORD-' . now()->format('YmdHis'),
             'product_id'     => $product->id,
@@ -77,7 +85,11 @@ class OrderController extends Controller
             'status'         => $request->status,
             'driver_id' => $request->driver_id,
         ]);
-        $product->decrement('stock', $request->quantity);
+
+        $this->orderService->decreaseStock(
+            $product,
+            $request->quantity
+        );
         return redirect()
             ->route('orders.index')
             ->with('success', 'Order created successfully.');
@@ -120,6 +132,7 @@ class OrderController extends Controller
         ]);
 
         $product = Product::findOrFail($request->product_id);
+        $oldStatus = $order->status;
 
         $order->update([
             'product_id'     => $product->id,
@@ -132,6 +145,15 @@ class OrderController extends Controller
             'driver_id' => $request->driver_id,
         ]);
 
+        if ($oldStatus != 'Cancelled' && $request->status == 'Cancelled') {
+
+            $this->orderService->increaseStock(
+                $product,
+                $order->quantity
+            );
+
+        }
+
         return redirect()
             ->route('orders.index')
             ->with('success', 'Order updated successfully.');
@@ -139,6 +161,13 @@ class OrderController extends Controller
 
     public function destroy(Order $order)
     {
+        if ($order->status != 'Cancelled') {
+            $order->product->increment('stock', $order->quantity);$this->orderService->increaseStock(
+                    $order->product,
+                    $order->quantity
+                );
+        }
+
         $order->delete();
 
         return redirect()

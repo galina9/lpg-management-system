@@ -65,35 +65,40 @@
 </div>
     <div class="col-md-6 mb-3">
 
-        <label class="form-label">Customer Name *</label>
+    <label class="form-label">
+        Customer *
+    </label>
 
-        <input
-            type="text"
-            name="customer_name"
-            class="form-control @error('customer_name') is-invalid @enderror"
-            value="{{ old('customer_name', $order->customer_name ?? '') }}">
+    <select
+        name="customer_id"
+        class="form-select @error('customer_id') is-invalid @enderror">
 
-        @error('customer_name')
-            <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
+        <option value="">
+            Select Customer
+        </option>
 
-    </div>
+        @foreach($customers as $customer)
 
-    <div class="col-md-6 mb-3">
+            <option
+                value="{{ $customer->id }}"
+                {{ old('customer_id', $order->customer_id ?? '') == $customer->id ? 'selected' : '' }}>
 
-        <label class="form-label">Customer Phone *</label>
+                {{ $customer->full_name }}
+                ({{ $customer->phone }})
 
-        <input
-            type="text"
-            name="customer_phone"
-            class="form-control @error('customer_phone') is-invalid @enderror"
-            value="{{ old('customer_phone', $order->customer_phone ?? '') }}">
+            </option>
 
-        @error('customer_phone')
-            <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
+        @endforeach
 
-    </div>
+    </select>
+
+    @error('customer_id')
+        <div class="invalid-feedback">
+            {{ $message }}
+        </div>
+    @enderror
+
+</div>
 
     <div class="col-md-3 mb-3">
 
@@ -169,16 +174,39 @@
         <label class="form-label">Status *</label>
 
         <select
-            name="status"
-            class="form-select">
+    name="status"
+    class="form-select @error('status') is-invalid @enderror">
 
-            <option value="Pending">Pending</option>
-            <option value="Assigned">Assigned</option>
-            <option value="On Delivery">On Delivery</option>
-            <option value="Delivered">Delivered</option>
-            <option value="Cancelled">Cancelled</option>
+    <option value="Pending"
+        {{ old('status', $order->status ?? 'Pending') == 'Pending' ? 'selected' : '' }}>
+        Pending
+    </option>
 
-        </select>
+    <option value="Assigned"
+        {{ old('status', $order->status ?? '') == 'Assigned' ? 'selected' : '' }}>
+        Assigned
+    </option>
+
+    <option value="On Delivery"
+        {{ old('status', $order->status ?? '') == 'On Delivery' ? 'selected' : '' }}>
+        On Delivery
+    </option>
+
+    <option value="Delivered"
+        {{ old('status', $order->status ?? '') == 'Delivered' ? 'selected' : '' }}>
+        Delivered
+    </option>
+
+    <option value="Cancelled"
+        {{ old('status', $order->status ?? '') == 'Cancelled' ? 'selected' : '' }}>
+        Cancelled
+    </option>
+
+</select>
+
+@error('status')
+    <div class="invalid-feedback">{{ $message }}</div>
+@enderror
 
     </div>
 

@@ -69,19 +69,7 @@
                            <td>{{ $order->customer->full_name ?? '—' }}</td>
                            <td>{{ $order->order_date }}</td>
                            <td>
-                              @if($order->status=='Completed')
-                              <span class="badge bg-success">
-                              Completed
-                              </span>
-                              @elseif($order->status=='Pending')
-                              <span class="badge bg-warning text-dark">
-                              Pending
-                              </span>
-                              @else
-                              <span class="badge bg-danger">
-                              Cancelled
-                              </span>
-                              @endif
+                              <x-order-status :status="$order->status" />
                            </td>
                         </tr>
                         @empty

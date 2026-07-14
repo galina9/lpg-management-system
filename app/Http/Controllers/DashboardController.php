@@ -11,7 +11,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // dd(auth()->check(), auth()->user());
         return view('admin.dashboard.index', [
 
             'totalProducts' => Product::count(),
@@ -26,7 +25,7 @@ class DashboardController extends Controller
                 ->take(5)
                 ->get(),
 
-            'lowStockProducts' => Product::where('stock','<',10)
+            'lowStockProducts' => Product::where('stock', '<=', 10)
                 ->orderBy('stock')
                 ->get(),
 

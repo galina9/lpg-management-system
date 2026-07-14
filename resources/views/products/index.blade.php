@@ -82,7 +82,25 @@
                      <td>{{ $product->unit }}</td>
                      <td>{{ number_format($product->purchase_price,2) }}AMD</td>
                      <td>{{ number_format($product->sale_price,2) }} AMD</td>
-                     <td>{{ $product->stock }}</td>
+                     <td>@if($product->stock <= 10)
+
+                         <span class="badge bg-danger">
+                             {{ $product->stock }}
+                         </span>
+
+                     @elseif($product->stock <= 30)
+
+                         <span class="badge bg-warning text-dark">
+                             {{ $product->stock }}
+                         </span>
+
+                     @else
+
+                         <span class="badge bg-success">
+                             {{ $product->stock }}
+                         </span>
+
+                     @endif</td>
                      <td>
                         @if($product->status=='active')
                         <span class="badge bg-success">
