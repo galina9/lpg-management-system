@@ -53,10 +53,7 @@ class CustomerController extends Controller
             ->with('success', 'Customer created successfully.');
     }
 
-    public function show(Customer $customer)
-    {
-        //
-    }
+    
 
     public function edit(Customer $customer)
     {

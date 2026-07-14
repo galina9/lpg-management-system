@@ -46,6 +46,29 @@
       </div>
    </div>
    <div class="row mt-4">
+
+    <div class="col-lg-12">
+
+        <div class="card shadow-sm">
+
+            <div class="card-header">
+
+                <strong>Monthly Sales</strong>
+
+            </div>
+
+            <div class="card-body">
+
+                <canvas id="salesChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+   <div class="row mt-4">
       <div class="col-lg-8">
          <div class="card">
             <div class="card-header">
@@ -111,4 +134,33 @@
       </div>
    </div>
 </div>
+<script>
+
+const sales = @json($monthlySales);
+
+const labels = [];
+const totals = [];
+
+for (let i = 1; i <= 12; i++) {
+    labels.push(i);
+    totals.push(sales[i] ?? 0);
+}
+
+new Chart(
+    document.getElementById('salesChart'),
+    {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Monthly Sales',
+                data: totals,
+                borderWidth: 3,
+                fill: false
+            }]
+        }
+    }
+);
+
+</script>
 @endsection

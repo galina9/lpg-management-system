@@ -33,12 +33,20 @@ class Order extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
     public function customer()
     {
         return $this->belongsTo(Customer::class);
     }
+
     public function driver()
     {
         return $this->belongsTo(User::class, 'driver_id');
     }
+
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
+    }
+    
 }

@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Customer;
 use App\Services\OrderService;
+use App\Exports\OrderExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
 {
@@ -21,7 +24,7 @@ class OrderController extends Controller
 
     public function index(Request $request)
     {
-       $query = Order::with(['customer','product','driver']);
+       $query = Order::with(['customer','product','driver', 'payment']);
 
         if ($request->filled('search')) {
             $query->where('order_number', 'like', '%' . $request->search . '%')
@@ -74,17 +77,19 @@ class OrderController extends Controller
                         'quantity' => 'Not enough stock available.'
                     ]);
             }
-        Order::create([
-            'order_number'   => 'ORD-' . now()->format('YmdHis'),
-            'product_id'     => $product->id,
-            'customer_id' => $request->customer_id,
-            'quantity'       => $request->quantity,
-            'unit_price'     => $product->sale_price,
-            'total_price'    => $product->sale_price * $request->quantity,
-            'order_date'     => $request->order_date,
-            'status'         => $request->status,
-            'driver_id' => $request->driver_id,
-        ]);
+           $orderNumber = 'ORD-' . now()->format('YmdHis');
+
+            $order = Order::create([
+                'order_number'   => $orderNumber,
+                'product_id'     => $product->id,
+                'customer_id'    => $request->customer_id,
+                'quantity'       => $request->quantity,
+                'unit_price'     => $product->sale_price,
+                'total_price'    => $product->sale_price * $request->quantity,
+                'order_date'     => $request->order_date,
+                'status'         => $request->status,
+                'driver_id'      => $request->driver_id,
+            ]);
 
         $this->orderService->decreaseStock(
             $product,
@@ -95,11 +100,7 @@ class OrderController extends Controller
             ->with('success', 'Order created successfully.');
     }
 
-    public function show(Order $order)
-    {
-        //
-    }
-
+  
   public function edit(Order $order)
 {
    $products = Product::where('status', 'active')->get();
@@ -162,10 +163,12 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         if ($order->status != 'Cancelled') {
-            $order->product->increment('stock', $order->quantity);$this->orderService->increaseStock(
-                    $order->product,
-                    $order->quantity
-                );
+
+            $this->orderService->increaseStock(
+                $order->product,
+                $order->quantity
+            );
+
         }
 
         $order->delete();
@@ -174,4 +177,30 @@ class OrderController extends Controller
             ->route('orders.index')
             ->with('success', 'Order deleted successfully.');
     }
+    public function exportExcel(Order $order)
+    {
+        return Excel::download(
+            new OrderExport($order),
+            'order-'.$order->order_number.'.xlsx'
+        );
+    }
+    
+    public function invoice(Order $order)
+{
+    $order->load([
+        'customer',
+        'product',
+        'driver',
+        'payment'
+    ]);
+
+    $pdf = Pdf::loadView(
+        'orders.invoice',
+        compact('order')
+    );
+
+    return $pdf->download(
+        'invoice-' . $order->order_number . '.pdf'
+    );
+}
 }

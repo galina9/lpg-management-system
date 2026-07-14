@@ -2,30 +2,102 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Order;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ReportController extends Controller
 {
-    public function sales(Request $request)
+    public function index(Request $request)
     {
-        $query = Order::query();
+        $from = $request->from;
+        $to   = $request->to;
 
-        if ($request->filled('from')) {
-            $query->whereDate('order_date', '>=', $request->from);
+        $orders = Order::query()
+            ->where('status', 'Delivered');
+
+        if ($from && $to) {
+            $orders->whereBetween('order_date', [$from, $to]);
         }
 
-        if ($request->filled('to')) {
-            $query->whereDate('order_date', '<=', $request->to);
-        }
+        $dailySales = (clone $orders)->sum('total_price');
 
-        $orders = $query->latest()->get();
+        $monthlySales = $dailySales;
 
-        $totalSales = $orders->sum('total_price');
+        $topCustomers = (clone $orders)
+            ->select(
+                'customer_id',
+                DB::raw('SUM(total_price) as total_sales'),
+                DB::raw('COUNT(*) as total_orders')
+            )
+            ->with('customer')
+            ->groupBy('customer_id')
+            ->orderByDesc('total_sales')
+            ->take(5)
+            ->get();
 
-        return view('reports.sales', compact(
-            'orders',
-            'totalSales'
+        $productSales = (clone $orders)
+            ->select(
+                'product_id',
+                DB::raw('SUM(quantity) as total_quantity'),
+                DB::raw('SUM(total_price) as total_revenue')
+            )
+            ->with('product')
+            ->groupBy('product_id')
+            ->orderByDesc('total_quantity')
+            ->get();
+
+        return view('reports.index', compact(
+            'dailySales',
+            'monthlySales',
+            'topCustomers',
+            'productSales'
         ));
     }
+    public function monthly(Request $request)
+{
+    $month = $request->month ?? now()->format('Y-m');
+
+    $orders = Order::with([
+            'customer',
+            'product',
+            'driver'
+        ])
+        ->whereYear('order_date', date('Y', strtotime($month)))
+        ->whereMonth('order_date', date('m', strtotime($month)))
+        ->get();
+
+    return view('reports.monthly', compact(
+        'orders',
+        'month'
+    ));
+}
+public function monthlyPdf(Request $request)
+{
+    $month = $request->month ?? now()->format('Y-m');
+
+    $orders = Order::with([
+            'customer',
+            'product',
+            'driver'
+        ])
+        ->whereYear('order_date', date('Y', strtotime($month)))
+        ->whereMonth('order_date', date('m', strtotime($month)))
+        ->get();
+
+    $totalRevenue = $orders->sum('total_price');
+
+    $pdf = Pdf::loadView('reports.pdf.monthly', [
+
+        'orders' => $orders,
+        'month' => $month,
+        'totalRevenue' => $totalRevenue
+
+    ]);
+
+    return $pdf->download(
+        'Monthly-Report-'.$month.'.pdf'
+    );
+}
 }

@@ -103,19 +103,45 @@
 
             </li>
 
-            <li>
-
-                <a href="{{ route('reports.sales') }}"
-                   class="{{ request()->routeIs('reports.*') ? 'active' : '' }}">
-
+           <li>
+                <a href="{{ route('reports.index') }}">
                     <i class="bi bi-bar-chart"></i>
-
                     <span>Reports</span>
-
                 </a>
+                <a href="{{ route('reports.monthly') }}" style="text-indent: 40px;">
+    Monthly Report
+</a>
 
             </li>
+            <li class="nav-item">
 
+    <a href="{{ route('stock-history.index') }}"
+       class="nav-link">
+
+        <i class="bi bi-clock-history"></i>
+
+        <span>Stock History</span>
+
+    </a>
+
+</li>
+<li class="nav-item">
+
+    <a
+        href="{{ route('payments.index') }}"
+        class="nav-link">
+
+        <i class="bi bi-cash-stack"></i>
+
+        <span>
+
+            Payments
+
+        </span>
+
+    </a>
+
+</li>
             <li>
 
                 <a href="#">

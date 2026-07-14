@@ -10,7 +10,16 @@ use App\Models\User;
 class DashboardController extends Controller
 {
     public function index()
-    {
+    {   
+        $monthlySales = Order::selectRaw("
+        MONTH(order_date) as month,
+        SUM(total_price) as total
+            ")
+            ->whereYear('order_date', now()->year)
+            ->where('status','Delivered')
+            ->groupByRaw('MONTH(order_date)')
+            ->pluck('total','month');
+
         return view('admin.dashboard.index', [
 
             'totalProducts' => Product::count(),
@@ -28,6 +37,7 @@ class DashboardController extends Controller
             'lowStockProducts' => Product::where('stock', '<=', 10)
                 ->orderBy('stock')
                 ->get(),
+            'monthlySales'=>$monthlySales,
 
         ]);
     }

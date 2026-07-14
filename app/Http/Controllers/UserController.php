@@ -54,10 +54,7 @@ class UserController extends Controller
             ->with('success', 'User created successfully.');
     }
 
-    public function show(User $user)
-    {
-        //
-    }
+   
 
     public function edit(User $user)
     {

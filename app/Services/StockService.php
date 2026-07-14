@@ -4,20 +4,11 @@ namespace App\Services;
 
 use App\Models\Product;
 use App\Models\StockHistory;
+use App\Services\StockService;
 
-class OrderService
+class StockService
 {
-    public function calculateTotal(Product $product, float $quantity): float
-    {
-        return $product->sale_price * $quantity;
-    }
-
-    public function hasEnoughStock(Product $product, float $quantity): bool
-    {
-        return $product->stock >= $quantity;
-    }
-
-    public function decreaseStock(Product $product, float $quantity): void
+    public static function out(Product $product, float $quantity, ?string $note = null): void
     {
         $before = $product->stock;
 
@@ -32,11 +23,11 @@ class OrderService
             'quantity'     => $quantity,
             'stock_before' => $before,
             'stock_after'  => $product->stock,
-            'note'         => 'Order created',
+            'note'         => $note,
         ]);
     }
 
-    public function increaseStock(Product $product, float $quantity): void
+    public static function in(Product $product, float $quantity, ?string $note = null): void
     {
         $before = $product->stock;
 
@@ -51,7 +42,7 @@ class OrderService
             'quantity'     => $quantity,
             'stock_before' => $before,
             'stock_after'  => $product->stock,
-            'note'         => 'Stock returned',
+            'note'         => $note,
         ]);
     }
 }
