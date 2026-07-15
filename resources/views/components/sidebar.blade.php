@@ -14,7 +14,7 @@
 
             <h4>LPG ERP</h4>
 
-            <small>Management System</small>
+            <small>{{ __('messages.management_system') }}</small>
 
         </div>
 
@@ -28,7 +28,7 @@
 
                 <i class="bi bi-speedometer2"></i>
 
-                <span>Dashboard</span>
+                <span>{{ __('messages.dashboard') }}</span>
 
             </a>
         </li>
@@ -37,7 +37,7 @@
 
             <li class="menu-title">
 
-                MANAGEMENT
+                {{ __('messages.management') }}
 
             </li>
 
@@ -48,7 +48,7 @@
 
                     <i class="bi bi-box-seam"></i>
 
-                    <span>Products</span>
+                   <span>{{ __('messages.products') }}</span>
 
                 </a>
 
@@ -61,8 +61,7 @@
 
                     <i class="bi bi-people"></i>
 
-                    <span>Customers</span>
-
+                    <span>{{ __('messages.customers') }}</span>
                 </a>
 
             </li>
@@ -74,7 +73,7 @@
 
                     <i class="bi bi-cart3"></i>
 
-                    <span>Orders</span>
+                    <span>{{ __('messages.orders') }}</span>
 
                 </a>
 
@@ -86,7 +85,7 @@
 
             <li class="menu-title">
 
-                ADMINISTRATION
+                {{ __('messages.administration') }}
 
             </li>
 
@@ -97,7 +96,7 @@
 
                     <i class="bi bi-person-gear"></i>
 
-                    <span>Users</span>
+                    <span>{{ __('messages.users') }}</span>
 
                 </a>
 
@@ -106,10 +105,10 @@
            <li>
                 <a href="{{ route('reports.index') }}">
                     <i class="bi bi-bar-chart"></i>
-                    <span>Reports</span>
+                   <span>{{ __('messages.reports') }}</span>
                 </a>
                 <a href="{{ route('reports.monthly') }}" style="text-indent: 40px;">
-    Monthly Report
+    <span>{{ __('messages.monthly_report') }}</span>
 </a>
 
             </li>
@@ -120,7 +119,7 @@
 
         <i class="bi bi-clock-history"></i>
 
-        <span>Stock History</span>
+        <span>{{ __('messages.stock_history') }}</span>
 
     </a>
 
@@ -133,11 +132,9 @@
 
         <i class="bi bi-cash-stack"></i>
 
-        <span>
-
-            Payments
-
-        </span>
+       <span>
+    {{ __('messages.payments') }}
+</span>
 
     </a>
 
@@ -148,7 +145,7 @@
 
                     <i class="bi bi-gear"></i>
 
-                    <span>Settings</span>
+                    <span>{{ __('messages.settings') }}</span>
 
                 </a>
 
@@ -160,7 +157,7 @@
 
             <li class="menu-title">
 
-                DRIVER
+                {{ __('messages.driver') }}
 
             </li>
 
@@ -170,8 +167,7 @@
 
                     <i class="bi bi-truck"></i>
 
-                    <span>My Orders</span>
-
+<span>{{ __('messages.my_orders') }}</span>
                 </a>
 
             </li>

@@ -12,8 +12,20 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\StockHistoryController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\LanguageController;
 
-Route::middleware('auth')->group(function () {
+
+/*
+    |--------------------------------------------------------------------------
+    | Language
+    |--------------------------------------------------------------------------
+    */       
+
+    Route::get('/language/{locale}',[LanguageController::class, 'switch'])
+        ->name('language.switch');
+
+
+Route::middleware('auth','locale')->group(function () {
 
     /*
     |--------------------------------------------------------------------------
@@ -168,10 +180,12 @@ Route::middleware('auth')->group(function () {
     |--------------------------------------------------------------------------
     */
 
-    Route::get(
-    '/orders/{order}/invoice',
-    [OrderController::class, 'invoice']
-)->name('orders.invoice');
+    Route::get('/orders/{order}/invoice',[OrderController::class, 'invoice'])
+        ->name('orders.invoice');
+
+    
+
+    
 
 });
 
