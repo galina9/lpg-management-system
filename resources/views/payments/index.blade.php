@@ -10,13 +10,13 @@
 
             <h2 class="fw-bold">
 
-                Payments
+                {{ __('messages.payments') }}
 
             </h2>
 
             <small class="text-muted">
 
-                Manage Payments
+                {{ __('messages.manage_payments') }}
 
             </small>
 
@@ -28,7 +28,7 @@
 
             <i class="bi bi-plus-circle"></i>
 
-            Add Payment
+            {{ __('messages.add_payment') }}
 
         </a>
 
@@ -46,19 +46,19 @@
 
                         <tr>
 
-                            <th>Order</th>
+                            <th>{{ __('messages.order') }}</th>
 
-                            <th>Customer</th>
+                            <th>{{ __('messages.customer') }}</th>
 
-                            <th>Amount</th>
+                            <th>{{ __('messages.amount') }}</th>
 
-                            <th>Method</th>
+                            <th>{{ __('messages.method') }}</th>
 
-                            <th>Status</th>
+                            <th>{{ __('messages.status') }}</th>
 
-                            <th>Date</th>
+                            <th>{{ __('messages.date') }}</th>
 
-                            <th>Actions</th>
+                            <th>{{ __('messages.actions') }}</th>
 
                         </tr>
 
@@ -100,7 +100,7 @@
 
                                     <span class="badge bg-success">
 
-                                        Paid
+                                        {{ __('messages.paid') }}
 
                                     </span>
 
@@ -108,7 +108,7 @@
 
                                     <span class="badge bg-warning text-dark">
 
-                                        Partial
+                                        {{ __('messages.partial') }}
 
                                     </span>
 
@@ -116,7 +116,7 @@
 
                                     <span class="badge bg-danger">
 
-                                        Unpaid
+                                        {{ __('messages.unpaid') }}
 
                                     </span>
 
@@ -151,7 +151,7 @@
 
                                     <button
                                         class="btn btn-danger btn-sm"
-                                        onclick="return confirm('Delete payment?')">
+                                        onclick="return confirm('{{ __('messages.delete_payment') }}')">
 
                                         <i class="bi bi-trash"></i>
 
@@ -169,7 +169,7 @@
 
                             <td colspan="7" class="text-center">
 
-                                No payments found.
+                                {{ __('messages.no_payments_found') }}
 
                             </td>
 

@@ -2,13 +2,15 @@
 
     <div class="col-md-6 mb-3">
 
-        <label class="form-label">Order *</label>
+        <label class="form-label">  {{ __('messages.order') }} *</label>
 
         <select
             name="order_id"
             class="form-select @error('order_id') is-invalid @enderror">
 
-            <option value="">Select Order</option>
+            <option value="">
+    {{ __('messages.select_order') }}
+</option>
 
             @foreach($orders as $order)
 
@@ -36,7 +38,9 @@
 
     <div class="col-md-6 mb-3">
 
-        <label class="form-label">Amount *</label>
+       <label class="form-label">
+    {{ __('messages.amount') }} *
+</label>
 
         <input
             type="number"
@@ -54,24 +58,31 @@
     </div>
 
     <div class="col-md-6 mb-3">
-
-        <label class="form-label">Payment Method *</label>
+<label class="form-label">
+    {{ __('messages.payment_method') }} *
+</label>
 
         <select
             name="method"
             class="form-select @error('method') is-invalid @enderror">
 
-            @foreach(['Cash','Card','Bank Transfer'] as $method)
+           @foreach(['Cash','Card','Bank Transfer'] as $method)
 
-                <option
-                    value="{{ $method }}"
-                    {{ old('method', $payment->method ?? '') == $method ? 'selected' : '' }}>
+    <option
+        value="{{ $method }}"
+        {{ old('method', $payment->method ?? '') == $method ? 'selected' : '' }}>
 
-                    {{ $method }}
+        @if($method === 'Cash')
+            {{ __('messages.cash') }}
+        @elseif($method === 'Card')
+            {{ __('messages.card') }}
+        @else
+            {{ __('messages.bank_transfer') }}
+        @endif
 
-                </option>
+    </option>
 
-            @endforeach
+@endforeach
 
         </select>
 
@@ -79,7 +90,9 @@
 
     <div class="col-md-6 mb-3">
 
-        <label class="form-label">Status *</label>
+       <label class="form-label">
+    {{ __('messages.status') }} *
+</label>
 
         <select
             name="status"
@@ -87,15 +100,21 @@
 
             @foreach(['Paid','Partial','Unpaid'] as $status)
 
-                <option
-                    value="{{ $status }}"
-                    {{ old('status', $payment->status ?? '') == $status ? 'selected' : '' }}>
+    <option
+        value="{{ $status }}"
+        {{ old('status', $payment->status ?? '') == $status ? 'selected' : '' }}>
 
-                    {{ $status }}
+        @if($status === 'Paid')
+            {{ __('messages.paid') }}
+        @elseif($status === 'Partial')
+            {{ __('messages.partial') }}
+        @else
+            {{ __('messages.unpaid') }}
+        @endif
 
-                </option>
+    </option>
 
-            @endforeach
+@endforeach
 
         </select>
 
@@ -103,7 +122,9 @@
 
     <div class="col-md-6 mb-3">
 
-        <label class="form-label">Payment Date *</label>
+<label class="form-label">
+    {{ __('messages.payment_date') }} *
+</label>
 
         <input
             type="date"
@@ -115,8 +136,9 @@
 
     <div class="col-md-12 mb-3">
 
-        <label class="form-label">Note</label>
-
+        <label class="form-label">
+    {{ __('messages.note') }}
+</label>
         <textarea
             name="note"
             rows="3"

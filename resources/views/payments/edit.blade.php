@@ -7,12 +7,9 @@
     <div class="card shadow-sm">
 
         <div class="card-header">
-
-            <h4 class="mb-0">
-
-                Edit Payment
-
-            </h4>
+<h4 class="mb-0">
+    {{ __('messages.edit_payment') }}
+</h4>
 
         </div>
 
@@ -31,15 +28,14 @@
                 <button
                     class="btn btn-primary">
 
-                    Update Payment
-
+{{ __('messages.update_payment') }}
                 </button>
 
                 <a
                     href="{{ route('payments.index') }}"
                     class="btn btn-secondary">
 
-                    Cancel
+                    {{ __('messages.cancel') }}
 
                 </a>
 

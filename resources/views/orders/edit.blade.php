@@ -4,7 +4,9 @@
 
 <div class="container-fluid">
 
-    <h2 class="mb-4">Edit Order</h2>
+   <h2 class="mb-4">
+    {{ __('messages.edit_order') }}
+</h2>
 
     <div class="card">
 
@@ -19,13 +21,13 @@
 
                 <button type="submit" class="btn btn-primary">
 
-                    Update Order
+                    {{ __('messages.update_order') }}
 
                 </button>
 
                 <a href="{{ route('orders.index') }}" class="btn btn-secondary">
 
-                    Cancel
+                    {{ __('messages.cancel') }}
 
                 </a>
 

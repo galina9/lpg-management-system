@@ -7,15 +7,19 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
 
         <div>
-            <h2 class="fw-bold mb-1">Users</h2>
-            <small class="text-muted">Manage system users</small>
+           <h2 class="fw-bold mb-1">
+    {{ __('messages.users') }}
+</h2>
+
+<small class="text-muted">
+    {{ __('messages.manage_system_users') }}
+</small>
         </div>
 
-        <a href="{{ route('users.create') }}" class="btn btn-primary">
-            <i class="bi bi-plus-circle me-2"></i>
-            Add User
-        </a>
-
+       <a href="{{ route('users.create') }}" class="btn btn-primary">
+    <i class="bi bi-plus-circle me-2"></i>
+    {{ __('messages.add_user') }}
+</a>
     </div>
 
     @if(session('success'))
@@ -31,25 +35,18 @@
             <form method="GET" class="row mb-4">
 
                 <div class="col-md-6">
-                    <input
-                        type="text"
-                        name="search"
-                        class="form-control"
-                        placeholder="Search user..."
-                        value="{{ request('search') }}">
+                   <input type="text" name="search" class="form-control" placeholder="{{ __('messages.search_user') }}" value="{{ request('search') }}">
                 </div>
 
                 <div class="col-md-2">
-                    <button class="btn btn-primary w-100">
-                        Search
-                    </button>
+                    <button class="btn btn-primary w-100">{{ __('messages.search') }}</button>
                 </div>
 
                 <div class="col-md-2">
                     <a href="{{ route('users.index') }}"
-                       class="btn btn-secondary w-100">
-                        Reset
-                    </a>
+   class="btn btn-secondary w-100">
+    {{ __('messages.reset') }}
+</a>
                 </div>
 
             </form>
@@ -62,12 +59,12 @@
 
                         <tr>
 
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Status</th>
-                            <th width="150">Actions</th>
+                          <th>{{ __('messages.id') }}</th>
+                        <th>{{ __('messages.name') }}</th>
+                        <th>{{ __('messages.email') }}</th>
+                        <th>{{ __('messages.role') }}</th>
+                        <th>{{ __('messages.status') }}</th>
+                        <th width="150">{{ __('messages.actions') }}</th>
 
                         </tr>
 
@@ -87,44 +84,44 @@
 
                             <td>
 
-                                @switch($user->role)
+                               @switch($user->role)
 
-                                    @case('director')
-                                        <span class="badge bg-danger">
-                                            Executive Director
-                                        </span>
-                                        @break
+    @case('director')
+        <span class="badge bg-danger">
+            {{ __('messages.executive_director') }}
+        </span>
+        @break
 
-                                    @case('manager')
-                                        <span class="badge bg-primary">
-                                            Manager
-                                        </span>
-                                        @break
+    @case('manager')
+        <span class="badge bg-primary">
+            {{ __('messages.manager') }}
+        </span>
+        @break
 
-                                    @default
-                                        <span class="badge bg-success">
-                                            Driver
-                                        </span>
+    @default
+        <span class="badge bg-success">
+            {{ __('messages.driver') }}
+        </span>
 
-                                @endswitch
+@endswitch
 
                             </td>
 
                             <td>
 
-                                @if($user->status)
+                               @if($user->status)
 
-                                    <span class="badge bg-success">
-                                        Active
-                                    </span>
+    <span class="badge bg-success">
+        {{ __('messages.active') }}
+    </span>
 
-                                @else
+@else
 
-                                    <span class="badge bg-secondary">
-                                        Inactive
-                                    </span>
+    <span class="badge bg-secondary">
+        {{ __('messages.inactive') }}
+    </span>
 
-                                @endif
+@endif
 
                             </td>
 
@@ -146,12 +143,12 @@
                                     @method('DELETE')
 
                                     <button
-                                        class="btn btn-danger btn-sm"
-                                        onclick="return confirm('Delete user?')">
+    class="btn btn-danger btn-sm"
+    onclick="return confirm('{{ __('messages.delete_user_confirm') }}')">
 
-                                        <i class="bi bi-trash"></i>
+    <i class="bi bi-trash"></i>
 
-                                    </button>
+</button>
 
                                 </form>
 
@@ -163,13 +160,9 @@
 
                         <tr>
 
-                            <td colspan="6"
-                                class="text-center">
-
-                                No users found.
-
-                            </td>
-
+                          <td colspan="6" class="text-center">
+    {{ __('messages.no_users_found') }}
+</td>
                         </tr>
 
                     @endforelse

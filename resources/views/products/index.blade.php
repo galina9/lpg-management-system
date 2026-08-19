@@ -4,18 +4,16 @@
    <div class="d-flex justify-content-between align-items-center mb-4">
       <div>
          <h2 class="fw-bold mb-1">
-            Products
+            {{ __('messages.products') }}
          </h2>
          <small class="text-muted">
-         Manage LPG products
-         </small>
+         {{ __('messages.manage_products') }}         </small>
       </div>
       <a href="{{ route('products.create') }}" class="btn btn-primary">
       <i class="bi bi-plus-circle me-2"></i>
-      Add Product
+      {{ __('messages.add_product') }}
       </a>
    </div>
-
    <div class="card shadow-sm">
       <div class="card-body">
          <form method="GET" action="{{ route('products.index') }}">
@@ -25,33 +23,33 @@
                      type="text"
                      name="search"
                      class="form-control"
-                     placeholder="Write product name..."
+                     placeholder="{{ __('messages.write_product_name') }}"
                      value="{{ request('search') }}">
                </div>
                <div class="col-md-3">
                   <select
                      name="status"
                      class="form-select">
-                     <option value="">All Status</option>
+                     <option value="">{{ __('messages.all_status') }}</option>
                      <option value="active"
                      {{ request('status')=='active' ? 'selected' : '' }}>
-                     Active
+                     {{ __('messages.active') }}
                      </option>
                      <option value="inactive"
                      {{ request('status')=='inactive' ? 'selected' : '' }}>
-                     Inactive
+                     {{ __('messages.inactive') }}
                      </option>
                   </select>
                </div>
                <div class="col-md-2">
                   <button class="btn btn-primary w-100">
-                  Search
+                  {{ __('messages.search') }}
                   </button>
                </div>
                <div class="col-md-2">
                   <a href="{{ route('products.index') }}"
                      class="btn btn-secondary w-100">
-                  Reset
+                  {{ __('messages.reset') }}
                   </a>
                </div>
             </div>
@@ -61,15 +59,15 @@
                <thead>
                   <tr>
                      <th>ID</th>
-                     <th>Name</th>
-                     <th>Code</th>
-                     <th>Gas Type</th>
-                     <th>Unit</th>
-                     <th>Purchase</th>
-                     <th>Sale</th>
-                     <th>Stock</th>
-                     <th>Status</th>
-                     <th width="140">Actions</th>
+                     <th>{{ __('messages.product_name') }}</th>
+                     <th>{{ __('messages.code') }}</th>
+                     <th>{{ __('messages.gas_type') }}</th>
+                     <th>{{ __('messages.unit') }}</th>
+                     <th>{{ __('messages.purchase') }}</th>
+                     <th>{{ __('messages.sale') }}</th>
+                     <th>{{ __('messages.stock') }}</th>
+                     <th>{{ __('messages.status') }}</th>
+                     <th width="140">{{ __('messages.actions') }}</th>
                   </tr>
                </thead>
                <tbody>
@@ -81,34 +79,29 @@
                      <td>{{ $product->gas_type }}</td>
                      <td>{{ $product->unit }}</td>
                      <td>{{ number_format($product->purchase_price,2) }}AMD</td>
-                     <td>{{ number_format($product->sale_price,2) }} AMD</td>
+                     <td>{{ number_format($product->purchase_price,2) }} AMD</td>
                      <td>@if($product->stock <= 10)
-
-                         <span class="badge bg-danger">
-                             {{ $product->stock }}
-                         </span>
-
-                     @elseif($product->stock <= 30)
-
-                         <span class="badge bg-warning text-dark">
-                             {{ $product->stock }}
-                         </span>
-
-                     @else
-
-                         <span class="badge bg-success">
-                             {{ $product->stock }}
-                         </span>
-
-                     @endif</td>
+                        <span class="badge bg-danger">
+                        {{ $product->stock }}
+                        </span>
+                        @elseif($product->stock <= 30)
+                        <span class="badge bg-warning text-dark">
+                        {{ $product->stock }}
+                        </span>
+                        @else
+                        <span class="badge bg-success">
+                        {{ $product->stock }}
+                        </span>
+                        @endif
+                     </td>
                      <td>
                         @if($product->status=='active')
                         <span class="badge bg-success">
-                        Active
+                        {{ __('messages.active') }}
                         </span>
                         @else
                         <span class="badge bg-danger">
-                        Inactive
+                        {{ __('messages.inactive') }}
                         </span>
                         @endif
                      </td>
@@ -148,46 +141,43 @@
    </div>
 </div>
 @push('scripts')
-
 <script>
-
-document.querySelectorAll('.delete-form').forEach(form=>{
-
-    form.addEventListener('submit',function(e){
-
-        e.preventDefault();
-
-        Swal.fire({
-
-            title:'Delete Product?',
-
-            text:'This action cannot be undone.',
-
-            icon:'warning',
-
-            showCancelButton:true,
-
-            confirmButtonColor:'#dc3545',
-
-            cancelButtonColor:'#6c757d',
-
-            confirmButtonText:'Delete'
-
-        }).then((result)=>{
-
-            if(result.isConfirmed){
-
-                form.submit();
-
-            }
-
-        });
-
-    });
-
-});
-
+   document.querySelectorAll('.delete-form').forEach(form=>{
+   
+       form.addEventListener('submit',function(e){
+   
+           e.preventDefault();
+   
+           Swal.fire({
+   
+              title:"{{ __('messages.delete_product') }}",
+   
+              text:"{{ __('messages.delete_warning') }}",
+   
+               icon:'warning',
+   
+               showCancelButton:true,
+   
+               confirmButtonColor:'#dc3545',
+   
+               cancelButtonColor:'#6c757d',
+   
+              confirmButtonText:"{{ __('messages.delete') }}"
+   
+           }).then((result)=>{
+   
+               if(result.isConfirmed){
+   
+                   form.submit();
+   
+               }
+   
+           });
+   
+       });
+   
+   });
+   
 </script>
-
 @endpush
 @endsection

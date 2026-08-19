@@ -9,11 +9,11 @@
         <div>
 
             <h2 class="fw-bold mb-1">
-                Customers
+                {{ __('messages.customers') }}
             </h2>
 
             <small class="text-muted">
-                Manage customers
+                {{ __('messages.manage_customers') }}
             </small>
 
         </div>
@@ -22,7 +22,7 @@
 
             <i class="bi bi-plus-circle me-2"></i>
 
-            Add Customer
+           {{ __('messages.add_customer') }}
 
         </a>
 
@@ -48,7 +48,7 @@
                             type="text"
                             name="search"
                             class="form-control"
-                            placeholder="Search customer..."
+                            placeholder="{{ __('messages.search_customer') }}"
                             value="{{ request('search') }}">
 
                     </div>
@@ -56,7 +56,7 @@
                     <div class="col-md-2">
 
                         <button class="btn btn-primary w-100">
-                            Search
+                            {{ __('messages.search') }}
                         </button>
 
                     </div>
@@ -66,7 +66,7 @@
                         <a href="{{ route('customers.index') }}"
                            class="btn btn-secondary w-100">
 
-                            Reset
+                            {{ __('messages.reset') }}
 
                         </a>
 
@@ -85,11 +85,11 @@
                         <tr>
 
                             <th>ID</th>
-                            <th>Full Name</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th width="140">Actions</th>
+                            <th>{{ __('messages.full_name') }}</th>
+                            <th>{{ __('messages.phone') }}</th>
+                            <th>{{ __('messages.email') }}</th>
+                            <th>{{ __('messages.status') }}</th>
+                            <th width="140">{{ __('messages.actions') }}</th>
 
                         </tr>
 
@@ -114,13 +114,13 @@
                                 @if($customer->status=='active')
 
                                     <span class="badge bg-success">
-                                        Active
+                                        {{ __('messages.active') }}
                                     </span>
 
                                 @else
 
                                     <span class="badge bg-danger">
-                                        Inactive
+                                        {{ __('messages.inactive') }}
                                     </span>
 
                                 @endif
@@ -144,7 +144,7 @@
                                     @method('DELETE')
 
                                     <button
-                                        onclick="return confirm('Delete customer?')"
+                                        onclick="return confirm('{{ __('messages.delete_customer') }}')"
                                         class="btn btn-danger btn-sm">
 
                                         <i class="bi bi-trash"></i>
@@ -164,7 +164,7 @@
                             <td colspan="6"
                                 class="text-center py-5">
 
-                                No customers found.
+                                {{ __('messages.no_customers_found') }}
 
                             </td>
 

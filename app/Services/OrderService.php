@@ -17,8 +17,11 @@ class OrderService
         return $product->stock >= $quantity;
     }
 
-    public function decreaseStock(Product $product, float $quantity): void
-    {
+    public function decreaseStock(
+        Product $product,
+        float $quantity,
+        string $note = 'Order stock out'
+    ): void {
         $before = $product->stock;
 
         $product->decrement('stock', $quantity);
@@ -32,12 +35,15 @@ class OrderService
             'quantity'     => $quantity,
             'stock_before' => $before,
             'stock_after'  => $product->stock,
-            'note'         => 'Order created',
+            'note'         => $note,
         ]);
     }
 
-    public function increaseStock(Product $product, float $quantity): void
-    {
+    public function increaseStock(
+        Product $product,
+        float $quantity,
+        string $note = 'Stock returned'
+    ): void {
         $before = $product->stock;
 
         $product->increment('stock', $quantity);
@@ -51,7 +57,7 @@ class OrderService
             'quantity'     => $quantity,
             'stock_before' => $before,
             'stock_after'  => $product->stock,
-            'note'         => 'Stock returned',
+            'note'         => $note,
         ]);
     }
 }

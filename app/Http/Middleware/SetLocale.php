@@ -15,10 +15,10 @@ class SetLocale
     public function handle(Request $request, Closure $next): Response
     {
 
-        dd(session('locale'));
-        // $locale = session('locale', config('app.locale'));
+        // dd(session('locale'));
+        $locale = session('locale', config('app.locale'));
 
-        // App::setLocale($locale);
+        App::setLocale($locale);
 
         return $next($request);
     }

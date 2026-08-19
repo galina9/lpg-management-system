@@ -3,12 +3,12 @@
 <div class="container-fluid">
    <div class="d-flex justify-content-between align-items-center mb-4">
       <div>
-         <h2 class="fw-bold mb-1">Orders</h2>
-         <small class="text-muted">Manage LPG orders</small>
+         <h2 class="fw-bold mb-1">{{ __('messages.orders') }}</h2>
+         <small class="text-muted">{{ __('messages.manage_orders') }}</small>
       </div>
       <a href="{{ route('orders.create') }}" class="btn btn-primary">
       <i class="bi bi-plus-circle me-2"></i>
-      Add Order
+      {{ __('messages.add_order') }}
       </a>
    </div>
    <div class="card shadow-sm">
@@ -20,18 +20,18 @@
                      type="text"
                      name="search"
                      class="form-control"
-                     placeholder="Search order..."
+                     placeholder="{{ __('messages.search_order') }}"
                      value="{{ request('search') }}">
                </div>
                <div class="col-md-2">
                   <button class="btn btn-primary w-100">
-                  Search
+                  {{ __('messages.search') }}
                   </button>
                </div>
                <div class="col-md-2">
                   <a href="{{ route('orders.index') }}"
                      class="btn btn-secondary w-100">
-                  Reset
+                  {{ __('messages.reset') }}
                   </a>
                </div>
             </div>
@@ -41,17 +41,17 @@
                <thead>
                   <tr>
                      <th>#</th>
-                     <th>Order No.</th>
-                     <th>Customer</th>
-                     <th>Phone</th>
-                     <th>Product</th>
-                     <th>Driver</th>
-                     <th>Quantity</th>
-                     <th>Total</th>
-                     <th>Status</th>
-                     <th>Payment</th>
-                     <th>Date</th>
-                     <th width="140">Actions</th>
+                     <th>{{ __('messages.order_number') }}.</th>
+                     <th>{{ __('messages.customer') }}</th>
+                     <th>{{ __('messages.phone') }}</th>
+                     <th>{{ __('messages.product') }}</th>
+                     <th>{{ __('messages.driver') }}</th>
+                     <th>{{ __('messages.quantity') }}</th>
+                     <th>{{ __('messages.total') }}</th>
+                     <th>{{ __('messages.status') }}</th>
+                     <th>{{ __('messages.payment') }}</th>
+                     <th>{{ __('messages.date') }}</th>
+                     <th width="140">{{ __('messages.actions') }}</th>
                   </tr>
                </thead>
                <tbody>
@@ -73,7 +73,7 @@
                         {{ $order->driver->name }}
                         @else
                         <span class="text-muted">
-                        Not Assigned
+                        {{ __('messages.not_assigned') }}
                         </span>
                         @endif
                      </td>
@@ -85,27 +85,27 @@
                         @switch($order->status)
                         @case('Pending')
                         <span class="badge bg-warning text-dark">
-                        Pending
+                        {{ __('messages.pending') }}
                         </span>
                         @break
                         @case('Assigned')
                         <span class="badge bg-info">
-                        Assigned
+                        {{ __('messages.assigned') }}
                         </span>
                         @break
                         @case('On Delivery')
                         <span class="badge bg-primary">
-                        On Delivery
+                        {{ __('messages.on_delivery') }}
                         </span>
                         @break
                         @case('Delivered')
                         <span class="badge bg-success">
-                        Delivered
+                        {{ __('messages.delivered') }}
                         </span>
                         @break
                         @case('Cancelled')
                         <span class="badge bg-danger">
-                        Cancelled
+                        {{ __('messages.cancelled') }}
                         </span>
                         @break
                         @default
@@ -118,20 +118,20 @@
                         @if($order->payment)
                         @if($order->payment->status=='Paid')
                         <span class="badge bg-success">
-                        Paid
+                        {{ __('messages.paid') }}
                         </span>
                         @elseif($order->payment->status=='Partial')
                         <span class="badge bg-warning text-dark">
-                        Partial
+                        {{ __('messages.partial') }}
                         </span>
                         @else
                         <span class="badge bg-danger">
-                        Unpaid
+                        {{ __('messages.unpaid') }}
                         </span>
                         @endif
                         @else
                         <span class="badge bg-secondary">
-                        No Payment
+                        {{ __('messages.no_payment') }}
                         </span>
                         @endif
                      </td>
@@ -145,21 +145,21 @@
                         <a
                            href="{{ route('payments.edit', $order->payment) }}"
                            class="btn btn-info btn-sm"
-                           title="Edit Payment">
+                           title="{{ __('messages.edit_payment') }}">
                         <i class="bi bi-credit-card"></i>
                         </a>
                         @else
                         <a
                            href="{{ route('payments.create', ['order' => $order->id]) }}"
                            class="btn btn-success btn-sm"
-                           title="Add Payment">
+                           title="{{ __('messages.add_payment') }}">
                         <i class="bi bi-cash-stack"></i>
                         </a>
                         @endif
                         <a
     href="{{ route('orders.invoice', $order) }}"
     class="btn btn-secondary btn-sm"
-    title="Invoice">
+    title="{{ __('messages.invoice') }}">
 
     <i class="bi bi-receipt"></i>
 
@@ -172,18 +172,16 @@
                            <button
                               type="submit"
                               class="btn btn-danger btn-sm"
-                              onclick="return confirm('Delete this order?')">
+                              onclick="return confirm('{{ __('messages.delete_order') }}')">
                            <i class="bi bi-trash"></i>
                            </button>
                         </form>
-                        <a href="{{ route('orders.invoice', $order) }}" class="btn btn-danger btn-sm"> <i class="bi bi-file-earmark-pdf"></i>
-                        </a>
                      </td>
                   </tr>
                   @empty
                   <tr>
-                     <td colspan="11" class="text-center py-4">
-                        No orders found.
+                     <td colspan="12" class="text-center py-4">
+                       {{ __('messages.no_orders_found') }}
                      </td>
                   </tr>
                   @endforelse

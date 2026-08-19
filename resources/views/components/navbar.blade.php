@@ -52,27 +52,35 @@
 
                 <ul class="dropdown-menu dropdown-menu-end">
 
-                    <li>
-                        <a
-                            class="dropdown-item"
-                            href="{{ route('language.switch', 'hy') }}">
+                   <li>
+    <a
+        class="dropdown-item"
+        href="{{ route('language.switch', 'hy') }}">
 
-                            🇦🇲 Հայերեն
+        🇦🇲 Հայերեն
 
-                        </a>
-                    </li>
+    </a>
+</li>
 
-                    <li>
-                        <a class="dropdown-item" href="#">
-                            🇬🇧 English
-                        </a>
-                    </li>
+<li>
+    <a
+        class="dropdown-item"
+        href="{{ route('language.switch', 'en') }}">
 
-                    <li>
-                        <a class="dropdown-item" href="#">
-                            🇷🇺 Русский
-                        </a>
-                    </li>
+        🇬🇧 English
+
+    </a>
+</li>
+
+<li>
+    <a
+        class="dropdown-item"
+        href="{{ route('language.switch', 'ru') }}">
+
+        🇷🇺 Русский
+
+    </a>
+</li>
 
                 </ul>
 

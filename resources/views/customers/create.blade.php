@@ -4,7 +4,9 @@
 
 <div class="container-fluid">
 
-    <h2 class="mb-4">Add Customer</h2>
+    <h2 class="mb-4">
+    {{ __('messages.add_customer') }}
+</h2>
 
     <div class="card">
 
@@ -18,14 +20,14 @@
 
                 <button type="submit" class="btn btn-primary">
 
-                    Save Customer
+                   {{ __('messages.save_customer') }}
 
                 </button>
 
                 <a href="{{ route('customers.index') }}"
                    class="btn btn-secondary">
 
-                    Cancel
+                    {{ __('messages.cancel') }}
 
                 </a>
 

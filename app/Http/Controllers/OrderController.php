@@ -120,46 +120,181 @@ class OrderController extends Controller
         'drivers'
     ));
 }
-    public function update(Request $request, Order $order)
-    {
-        $request->validate([
-            'product_id'      => 'required|exists:products,id',
-            'customer_id' => 'required|exists:customers,id',
-            'quantity'        => 'required|numeric|min:1',
-            'order_date'      => 'required|date',
-            'status'          => 'required',
-            'driver_id' => 'nullable|exists:users,id',
+   public function update(Request $request, Order $order)
+{
+    $request->validate([
+        'product_id'  => 'required|exists:products,id',
+        'customer_id' => 'required|exists:customers,id',
+        'quantity'    => 'required|numeric|min:1',
+        'order_date'  => 'required|date',
+        'status'      => 'required',
+        'driver_id'   => 'nullable|exists:users,id',
+    ]);
 
-        ]);
+    $newProduct = Product::findOrFail($request->product_id);
 
-        $product = Product::findOrFail($request->product_id);
-        $oldStatus = $order->status;
+    $oldProduct = $order->product;
+    $oldQuantity = (float) $order->quantity;
+    $oldStatus = $order->status;
 
-        $order->update([
-            'product_id'     => $product->id,
-            'customer_id' => $request->customer_id,
-            'quantity'       => $request->quantity,
-            'unit_price'     => $product->sale_price,
-            'total_price'    => $product->sale_price * $request->quantity,
-            'order_date'     => $request->order_date,
-            'status'         => $request->status,
-            'driver_id' => $request->driver_id,
-        ]);
+    $newQuantity = (float) $request->quantity;
+    $newStatus = $request->status;
 
-        if ($oldStatus != 'Cancelled' && $request->status == 'Cancelled') {
 
-            $this->orderService->increaseStock(
-                $product,
-                $order->quantity
-            );
+    /*
+    |--------------------------------------------------------------------------
+    | Active → Cancelled
+    |--------------------------------------------------------------------------
+    */
 
-        }
+    if ($oldStatus !== 'Cancelled' && $newStatus === 'Cancelled') {
 
-        return redirect()
-            ->route('orders.index')
-            ->with('success', 'Order updated successfully.');
+        // Return the FULL old order quantity to stock
+        $this->orderService->increaseStock(
+            $oldProduct,
+            $oldQuantity
+        );
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cancelled → Active
+    |--------------------------------------------------------------------------
+    */
+
+    elseif ($oldStatus === 'Cancelled' && $newStatus !== 'Cancelled') {
+
+        if (!$this->orderService->hasEnoughStock(
+            $newProduct,
+            $newQuantity
+        )) {
+
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'quantity' =>
+                        'Not enough stock available for the selected product.'
+                ]);
+        }
+
+        $this->orderService->decreaseStock(
+            $newProduct,
+            $newQuantity
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Active → Active
+    |--------------------------------------------------------------------------
+    */
+
+    elseif ($oldStatus !== 'Cancelled' && $newStatus !== 'Cancelled') {
+
+        // Same product
+        if ($oldProduct->id === $newProduct->id) {
+
+            $difference = $newQuantity - $oldQuantity;
+
+
+            // Quantity increased
+            if ($difference > 0) {
+
+                if (!$this->orderService->hasEnoughStock(
+                    $newProduct,
+                    $difference
+                )) {
+
+                    return back()
+                        ->withInput()
+                        ->withErrors([
+                            'quantity' =>
+                                'Not enough stock available.'
+                        ]);
+                }
+
+                $this->orderService->decreaseStock(
+                    $newProduct,
+                    $difference
+                );
+            }
+
+
+            // Quantity decreased
+            elseif ($difference < 0) {
+
+                $this->orderService->increaseStock(
+                    $newProduct,
+                    abs($difference)
+                );
+            }
+        }
+
+
+        // Product changed
+        else {
+
+            // Return old product stock
+            $this->orderService->increaseStock(
+                $oldProduct,
+                $oldQuantity
+            );
+
+
+            // Check new product stock
+            if (!$this->orderService->hasEnoughStock(
+                $newProduct,
+                $newQuantity
+            )) {
+
+                // Restore old product state
+                $this->orderService->decreaseStock(
+                    $oldProduct,
+                    $oldQuantity
+                );
+
+                return back()
+                    ->withInput()
+                    ->withErrors([
+                        'quantity' =>
+                            'Not enough stock available for the selected product.'
+                    ]);
+            }
+
+
+            // Take stock from new product
+            $this->orderService->decreaseStock(
+                $newProduct,
+                $newQuantity
+            );
+        }
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Update order
+    |--------------------------------------------------------------------------
+    */
+
+    $order->update([
+        'product_id'  => $newProduct->id,
+        'customer_id' => $request->customer_id,
+        'quantity'    => $newQuantity,
+        'unit_price'  => $newProduct->sale_price,
+        'total_price' => $newProduct->sale_price * $newQuantity,
+        'order_date'  => $request->order_date,
+        'status'      => $newStatus,
+        'driver_id'   => $request->driver_id,
+    ]);
+
+
+    return redirect()
+        ->route('orders.index')
+        ->with('success', 'Order updated successfully.');
+}
     public function destroy(Order $order)
     {
         if ($order->status != 'Cancelled') {

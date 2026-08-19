@@ -25,7 +25,7 @@ use App\Http\Controllers\LanguageController;
         ->name('language.switch');
 
 
-Route::middleware('auth','locale')->group(function () {
+Route::middleware(['auth','locale',])->group(function () {
 
     /*
     |--------------------------------------------------------------------------

@@ -2,7 +2,9 @@
 
     <div class="col-md-6 mb-3">
 
-        <label class="form-label">Full Name *</label>
+       <label class="form-label">
+    {{ __('messages.full_name') }} *
+</label>
 
         <input
             type="text"
@@ -18,7 +20,9 @@
 
     <div class="col-md-6 mb-3">
 
-        <label class="form-label">Phone *</label>
+       <label class="form-label">
+    {{ __('messages.phone') }} *
+</label>
 
         <input
             type="text"
@@ -34,7 +38,9 @@
 
     <div class="col-md-6 mb-3">
 
-        <label class="form-label">Email</label>
+        <label class="form-label">
+    {{ __('messages.email') }}
+</label>
 
         <input
             type="email"
@@ -50,7 +56,9 @@
 
     <div class="col-md-6 mb-3">
 
-        <label class="form-label">Status</label>
+        <label class="form-label">
+    {{ __('messages.status') }}
+</label>
 
         <select
             name="status"
@@ -58,12 +66,12 @@
 
             <option value="active"
                 {{ old('status', $customer->status ?? 'active') == 'active' ? 'selected' : '' }}>
-                Active
+                {{ __('messages.active') }}
             </option>
 
             <option value="inactive"
                 {{ old('status', $customer->status ?? '') == 'inactive' ? 'selected' : '' }}>
-                Inactive
+                {{ __('messages.inactive') }}
             </option>
 
         </select>
@@ -72,7 +80,9 @@
 
     <div class="col-12 mb-3">
 
-        <label class="form-label">Address</label>
+      <label class="form-label">
+    {{ __('messages.address') }}
+</label>
 
         <textarea
             name="address"

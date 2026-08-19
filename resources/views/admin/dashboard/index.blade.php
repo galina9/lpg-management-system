@@ -4,10 +4,10 @@
    <div class="d-flex justify-content-between align-items-center mb-4">
       <div>
          <h2 class="fw-bold mb-1">
-            Dashboard
+            {{ __('messages.dashboard') }}
          </h2>
          <small class="text-muted">
-         LPG Management System Overview
+         {{ __('messages.dashboard_overview') }}
          </small>
       </div>
    </div>
@@ -15,7 +15,7 @@
       <div class="col-xl-3 col-md-6">
          <div class="card h-100">
             <div class="card-body">
-               <h6 class="text-muted">Products</h6>
+               <h6 class="text-muted">{{ __('messages.products') }}</h6>
                <h2>{{ $totalProducts }}</h2>
             </div>
          </div>
@@ -23,7 +23,7 @@
       <div class="col-xl-3 col-md-6">
          <div class="card h-100">
             <div class="card-body">
-               <h6 class="text-muted">Customers</h6>
+               <h6 class="text-muted">{{ __('messages.customers') }}</h6>
                <h2>{{ $totalCustomers }}</h2>
             </div>
          </div>
@@ -31,7 +31,7 @@
       <div class="col-xl-3 col-md-6">
          <div class="card h-100">
             <div class="card-body">
-               <h6 class="text-muted">Orders</h6>
+               <h6 class="text-muted">{{ __('messages.orders') }}</h6>
                <h2>{{ $totalOrders }}</h2>
             </div>
          </div>
@@ -39,7 +39,7 @@
       <div class="col-xl-3 col-md-6">
          <div class="card h-100">
             <div class="card-body">
-               <h6 class="text-muted">Users</h6>
+               <h6 class="text-muted">{{ __('messages.users') }}</h6>
                <h2>{{ $totalUsers }}</h2>
             </div>
          </div>
@@ -53,7 +53,7 @@
 
             <div class="card-header">
 
-                <strong>Monthly Sales</strong>
+                <strong>{{ __('messages.monthly_sales') }}</strong>
 
             </div>
 
@@ -72,7 +72,7 @@
       <div class="col-lg-8">
          <div class="card">
             <div class="card-header">
-               <strong>Latest Orders</strong>
+               <strong>{{ __('messages.latest_orders') }}</strong>
             </div>
             <div class="card-body p-0">
                <div class="table-responsive">
@@ -80,9 +80,9 @@
                      <thead>
                         <tr>
                            <th>#</th>
-                           <th>Customer</th>
-                           <th>Date</th>
-                           <th>Status</th>
+                           <th>{{ __('messages.customer') }}</th>
+                           <th>{{ __('messages.date') }}</th>
+                           <th>{{ __('messages.status') }}</th>
                         </tr>
                      </thead>
                      <tbody>
@@ -99,7 +99,7 @@
                         <tr>
                            <td colspan="4"
                               class="text-center py-4">
-                              No orders found.
+                              {{ __('messages.no_orders_found') }}
                            </td>
                         </tr>
                         @endforelse
@@ -112,7 +112,7 @@
       <div class="col-lg-4">
          <div class="card">
             <div class="card-header">
-               <strong>Low Stock Products</strong>
+               <strong>{{ __('messages.low_stock_products') }}</strong>
             </div>
             <div class="card-body">
                @forelse($lowStockProducts as $product)
@@ -126,7 +126,7 @@
                </div>
                @empty
                <p class="text-muted mb-0">
-                  All products have sufficient stock.
+                  {{ __('messages.all_products_in_stock') }}
                </p>
                @endforelse
             </div>
@@ -153,7 +153,7 @@ new Chart(
         data: {
             labels: labels,
             datasets: [{
-                label: 'Monthly Sales',
+                label: "{{ __('messages.monthly_sales') }}",
                 data: totals,
                 borderWidth: 3,
                 fill: false

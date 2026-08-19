@@ -8,11 +8,7 @@
 
         <div class="card-header">
 
-            <h4 class="mb-0">
-
-                Add Payment
-
-            </h4>
+            <h4 class="mb-0">{{ __('messages.add_payment') }}</h4>
 
         </div>
 
@@ -29,7 +25,7 @@
                 <button
                     class="btn btn-primary">
 
-                    Save Payment
+                   {{ __('messages.save_payment') }}
 
                 </button>
 
@@ -37,7 +33,7 @@
                     href="{{ route('payments.index') }}"
                     class="btn btn-secondary">
 
-                    Cancel
+                    {{ __('messages.cancel') }}
 
                 </a>
 

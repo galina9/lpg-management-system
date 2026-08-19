@@ -2,7 +2,9 @@
 
     <div class="col-md-6 mb-3">
 
-        <label class="form-label">Product *</label>
+        <label class="form-label">
+    {{ __('messages.product') }} *
+</label>
 
         <select name="product_id"
                 class="form-select @error('product_id') is-invalid @enderror">
@@ -31,8 +33,8 @@
 <div class="col-md-6 mb-3">
 
     <label class="form-label">
-        Driver
-    </label>
+    {{ __('messages.driver') }}
+</label>
 
     <select
         name="driver_id"
@@ -213,25 +215,34 @@
 </div>
 
 <script>
-
+const product = document.querySelector('select[name="product_id"]');
+const qty = document.querySelector('input[name="quantity"]');
 const stock = document.getElementById('available_stock');
+const price = document.getElementById('unit_price');
+const total = document.getElementById('total_price');
 
-function calculate(){
+function calculate() {
 
     const option = product.options[product.selectedIndex];
 
+    if (!option) {
+        stock.value = '';
+        price.value = '';
+        total.value = '';
+        return;
+    }
+
     const unit = parseFloat(option.dataset.price || 0);
-
     const available = parseFloat(option.dataset.stock || 0);
-
     const quantity = parseFloat(qty.value || 0);
 
     stock.value = available;
-
     price.value = unit.toFixed(2);
-
     total.value = (unit * quantity).toFixed(2);
-
 }
 
+product.addEventListener('change', calculate);
+qty.addEventListener('input', calculate);
+
+calculate();
 </script>
