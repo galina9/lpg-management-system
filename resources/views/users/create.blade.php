@@ -4,7 +4,9 @@
 
 <div class="container-fluid">
 
-    <h2 class="mb-4">Add User</h2>
+    <h2 class="mb-4">
+        {{ __('messages.add_user') }}
+    </h2>
 
     <div class="card">
 
@@ -18,14 +20,14 @@
 
                 <button class="btn btn-primary">
 
-                    Save User
+                    {{ __('messages.save_user') }}
 
                 </button>
 
                 <a href="{{ route('users.index') }}"
                    class="btn btn-secondary">
 
-                    Cancel
+                    {{ __('messages.cancel') }}
 
                 </a>
 

@@ -57,7 +57,7 @@
 
 <body>
 
-    <h1>LPG MANAGEMENT SYSTEM</h1>
+    <h1>ProGas MANAGEMENT SYSTEM</h1>
 
     <h3>{{ __('messages.invoice') }}</h3>
 

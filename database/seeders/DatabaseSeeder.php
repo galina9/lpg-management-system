@@ -14,15 +14,15 @@
 //         Product::insert([
 
 //             [
-//                 'name' => 'LPG Standard',
-//                 'code' => 'LPG001',
-//                 'gas_type' => 'LPG',
+//                 'name' => 'ProGas MANAGEMENT SYSTEM Standard',
+//                 'code' => 'ProGas MANAGEMENT SYSTEM001',
+//                 'gas_type' => 'ProGas MANAGEMENT SYSTEM',
 //                 'unit' => 'Liter',
 //                 'purchase_price' => 220,
 //                 'sale_price' => 250,
 //                 'stock' => 5000,
 //                 'status' => 'active',
-//                 'description' => 'Standard LPG',
+//                 'description' => 'Standard ProGas MANAGEMENT SYSTEM',
 //                 'created_at' => now(),
 //                 'updated_at' => now(),
 //             ],

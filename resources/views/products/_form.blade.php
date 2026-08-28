@@ -25,7 +25,7 @@
          class="form-select @error('gas_type') is-invalid @enderror">
          <option value="">{{ __('messages.select') }}</option>
          @foreach([
-         'LPG' => __('messages.lpg'),
+         'ProGas MANAGEMENT SYSTEM' => __('messages.ProGas MANAGEMENT SYSTEM'),
          'Propane' => __('messages.propane'),
          'Butane' => __('messages.butane'),
          ] as $value => $label)

@@ -4,7 +4,9 @@
 
 <div class="container-fluid">
 
-    <h2 class="mb-4">Edit User</h2>
+    <h2 class="mb-4">
+        {{ __('messages.edit_user') }}
+    </h2>
 
     <div class="card">
 
@@ -18,15 +20,13 @@
                 @include('users._form')
 
                 <button class="btn btn-primary">
-
-                    Update User
-
+                    {{ __('messages.update_user') }}
                 </button>
 
                 <a href="{{ route('users.index') }}"
                    class="btn btn-secondary">
 
-                    Cancel
+                    {{ __('messages.cancel') }}
 
                 </a>
 

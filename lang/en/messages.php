@@ -87,13 +87,13 @@ return [
     "my_orders" => "My Orders",
     "monthly_report" => "Monthly Report",
 
-    "dashboard_overview" => "LPG Management System Overview",
+    "dashboard_overview" => "ProGas MANAGEMENT SYSTEM Overview",
     "no_orders_found" => "No orders found.",
     "all_products_in_stock" => "All products have sufficient stock.",
 
     "add_product" => "Add product",
 
-    "manage_products" => "Manage LPG products",
+    "manage_products" => "Manage ProGas MANAGEMENT SYSTEM products",
     "write_product_name" => "Write product name...",
     "all_status" => "All Status",
     "code" => "Code",
@@ -105,7 +105,7 @@ return [
     "delete_product" => "Delete Product?",
     "delete_warning" => "This action cannot be undone.",
 
-    "create_new_product" => "Create a new LPG product",
+    "create_new_product" => "Create a new ProGas MANAGEMENT SYSTEM product",
     "back" => "Back",
     "save_product" => "Save Product",
 
@@ -115,7 +115,7 @@ return [
     "description" => "Description",
     "liter" => "Liter",
     "kg" => "Kg",
-    "lpg" => "LPG",
+    "ProGas MANAGEMENT SYSTEM" => "ProGas MANAGEMENT SYSTEM",
     "propane" => "Propan",
     "butane" => "Butane",
 
@@ -146,7 +146,7 @@ return [
 'edit_customer' => 'Edit Customer',
 'update_customer' => 'Update Customer',
 'update_customer_information' => 'Update customer information',
-'manage_orders' => 'Manage LPG orders',
+'manage_orders' => 'Manage ProGas MANAGEMENT SYSTEM orders',
 'add_order' => 'Add Order',
 'search_order' => 'Search order...',
 'not_assigned' => 'Not Assigned',
@@ -165,7 +165,7 @@ return [
 'name' => 'Name',
 'method' => 'Method',
 'amount_paid' => 'Amount Paid',
-'thank_you' => 'Thank you for choosing LPG Management System',
+'thank_you' => 'Thank you for choosing ProGas MANAGEMENT SYSTEM',
 
 'manage_payments' => 'Manage Payments',
 'order' => 'Order',
@@ -223,6 +223,128 @@ return [
 'inactive' => 'Inactive',
 'delete_user_confirm' => 'Delete user?',
 'no_users_found' => 'No users found.',
+
+'reports' => 'Reports',
+'from' => 'From',
+'to' => 'To',
+'apply' => 'Apply',
+'reset' => 'Reset',
+'todays_sales' => "Today's Sales",
+'this_month' => 'This Month',
+'top_customers' => 'Top Customers',
+'customer' => 'Customer',
+'orders' => 'Orders',
+'total_sales' => 'Total Sales',
+'product_sales' => 'Product Sales',
+'product' => 'Product',
+'quantity_sold' => 'Quantity Sold',
+'revenue' => 'Revenue',
+'no_data' => 'No data',
+'no_sales_yet' => 'No sales yet',
+
+
+'edit_user' => 'Edit User',
+'update_user' => 'Update User',
+'cancel' => 'Cancel',
+
+'name' => 'Name',
+'email' => 'Email',
+'password' => 'Password',
+'leave_blank_to_keep_current' => 'leave blank to keep current',
+
+'role' => 'Role',
+'executive_director' => 'Executive Director',
+'manager' => 'Manager',
+'driver' => 'Driver',
+
+'status' => 'Status',
+'active' => 'Active',
+'inactive' => 'Inactive',
+
+'monthly_report' => 'Monthly Report',
+'export_pdf' => 'Export PDF',
+'show' => 'Show',
+'order' => 'Order',
+'total' => 'Total',
+'month' => 'Month',
+'quantity' => 'Quantity',
+
+'users' => 'Users',
+'manage_system_users' => 'Manage system users',
+'add_user' => 'Add User',
+'search_user' => 'Search user...',
+'search' => 'Search',
+'actions' => 'Actions',
+'delete_user_confirm' => 'Delete user?',
+'no_users_found' => 'No users found',
+'save_user' => 'Save User',
+
+'region' => 'Region',
+'city' => 'City',
+'apartment' => 'Apartment',
+
+'driver_orders' => 'Orders assigned to me',
+'start_delivery' => 'Start Delivery',
+'mark_delivered' => 'Mark as Delivered',
+'no_deliveries' => 'No deliveries assigned',
+'apartment' => 'Apartment',
+
+'my_deliveries' => 'My Deliveries',
+'region' => 'Region',
+'city' => 'City',
+'apartment' => 'Apartment',
+'no_address' => 'Address not provided',
+'start_delivery' => 'Start Delivery',
+'mark_delivered' => 'Mark as Delivered',
+'no_deliveries_assigned' => 'No deliveries assigned to you',
+
+
+'my_deliveries' => 'My Deliveries',
+'start_delivery' => 'Start Delivery',
+'mark_delivered' => 'Mark as Delivered',
+'no_deliveries_assigned' => 'No deliveries assigned',
+'no_address' => 'No address provided',
+'region' => 'Region',
+'city' => 'City',
+'apartment' => 'Apartment',
+
+
+'notifications' => 'Notifications',
+'no_notifications' => 'No new notifications',
+'notification' => 'Notification',
+'order_status_changed' => 'Order status changed',
+'order_status' => 'Order status',
+'old_status' => 'Previous status',
+'new_status' => 'New status',
+
+
+'product' => 'Product',
+'driver' => 'Driver',
+'customer' => 'Customer',
+'quantity' => 'Quantity',
+'available_stock' => 'Available Stock',
+'unit_price' => 'Unit Price',
+'total_price' => 'Total Price',
+'order_date' => 'Order Date',
+'status' => 'Status',
+
+'order_details' => 'Order Details',
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -2,7 +2,9 @@
 
     <div class="col-md-6 mb-3">
 
-        <label class="form-label">Name *</label>
+        <label class="form-label">
+            {{ __('messages.name') }} *
+        </label>
 
         <input
             type="text"
@@ -11,14 +13,19 @@
             value="{{ old('name', $user->name ?? '') }}">
 
         @error('name')
-            <div class="invalid-feedback">{{ $message }}</div>
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
         @enderror
 
     </div>
 
+
     <div class="col-md-6 mb-3">
 
-        <label class="form-label">Email *</label>
+        <label class="form-label">
+            {{ __('messages.email') }} *
+        </label>
 
         <input
             type="email"
@@ -27,15 +34,26 @@
             value="{{ old('email', $user->email ?? '') }}">
 
         @error('email')
-            <div class="invalid-feedback">{{ $message }}</div>
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
         @enderror
 
     </div>
 
+
     <div class="col-md-6 mb-3">
 
         <label class="form-label">
-            Password {{ isset($user) ? '(leave blank to keep current)' : '*' }}
+
+            {{ __('messages.password') }}
+
+            @if(isset($user))
+                ({{ __('messages.leave_blank_to_keep_current') }})
+            @else
+                *
+            @endif
+
         </label>
 
         <input
@@ -44,50 +62,68 @@
             class="form-control @error('password') is-invalid @enderror">
 
         @error('password')
-            <div class="invalid-feedback">{{ $message }}</div>
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
         @enderror
 
     </div>
 
+
     <div class="col-md-6 mb-3">
 
-        <label class="form-label">Role *</label>
+        <label class="form-label">
+            {{ __('messages.role') }} *
+        </label>
 
         <select name="role" class="form-select">
 
             <option value="director"
                 {{ old('role', $user->role ?? '') == 'director' ? 'selected' : '' }}>
-                Executive Director
+
+                {{ __('messages.executive_director') }}
+
             </option>
 
             <option value="manager"
                 {{ old('role', $user->role ?? '') == 'manager' ? 'selected' : '' }}>
-                Manager
+
+                {{ __('messages.manager') }}
+
             </option>
 
             <option value="driver"
                 {{ old('role', $user->role ?? 'driver') == 'driver' ? 'selected' : '' }}>
-                Driver
+
+                {{ __('messages.driver') }}
+
             </option>
 
         </select>
 
     </div>
 
+
     <div class="col-md-6 mb-3">
 
-        <label class="form-label">Status</label>
+        <label class="form-label">
+            {{ __('messages.status') }}
+        </label>
 
         <select name="status" class="form-select">
 
             <option value="1"
                 {{ old('status', $user->status ?? 1) == 1 ? 'selected' : '' }}>
-                Active
+
+                {{ __('messages.active') }}
+
             </option>
 
             <option value="0"
                 {{ old('status', $user->status ?? 1) == 0 ? 'selected' : '' }}>
-                Inactive
+
+                {{ __('messages.inactive') }}
+
             </option>
 
         </select>

@@ -40,7 +40,13 @@ class CustomerController extends Controller
 
             'email' => 'nullable|email',
 
-            'address' => 'nullable',
+            'region' => 'nullable|max:255',
+
+            'city' => 'nullable|max:255',
+
+            'address' => 'nullable|max:255',
+
+            'apartment' => 'nullable|max:255',
 
             'status' => 'required',
 
@@ -52,8 +58,6 @@ class CustomerController extends Controller
             ->route('customers.index')
             ->with('success', 'Customer created successfully.');
     }
-
-    
 
     public function edit(Customer $customer)
     {
@@ -70,7 +74,13 @@ class CustomerController extends Controller
 
             'email' => 'nullable|email',
 
-            'address' => 'nullable',
+            'region' => 'nullable|max:255',
+
+            'city' => 'nullable|max:255',
+
+            'address' => 'nullable|max:255',
+
+            'apartment' => 'nullable|max:255',
 
             'status' => 'required',
 

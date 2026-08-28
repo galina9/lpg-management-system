@@ -87,12 +87,12 @@ return [
     "my_orders" => "Իմ պատվերները",
     "monthly_report" => "Ամսական հաշվետվություն",
 
-    "dashboard_overview" => "LPG կառավարման համակարգի ընդհանուր տեսք",
+    "dashboard_overview" => "ProGas MANAGEMENT SYSTEM կառավարման համակարգի ընդհանուր տեսք",
     "no_orders_found" => "Պատվերներ չեն գտնվել։",
     "all_products_in_stock" => "Բոլոր ապրանքներն ունեն բավարար մնացորդ։",
 
     "add_product" => "Ավելացնել ապրանք",
-    "manage_products" => "Կառավարեք LPG ապրանքները",
+    "manage_products" => "Կառավարեք ProGas MANAGEMENT SYSTEM ապրանքները",
     "write_product_name" => "Մուտքագրեք ապրանքի անունը...",
     "all_status" => "Բոլոր կարգավիճակները",
     "code" => "Կոդ",
@@ -104,7 +104,7 @@ return [
     "delete_product" => "Ջնջե՞լ ապրանքը",
     "delete_warning" => "Այս գործողությունը հնարավոր չէ վերադարձնել։",
 
-    "create_new_product" => "Ստեղծել նոր LPG ապրանք",
+    "create_new_product" => "Ստեղծել նոր ProGas MANAGEMENT SYSTEM ապրանք",
     "back" => "Հետ",
     "save_product" => "Պահպանել ապրանքը",
 
@@ -114,7 +114,7 @@ return [
     "description" => "Նկարագրություն",
     "liter" => "Լիտր",
     "kg" => "Կգ",
-    "lpg" => "LPG",
+    "ProGas MANAGEMENT SYSTEM" => "ProGas MANAGEMENT SYSTEM",
     "propane" => "Պրոպան",
     "butane" => "Բութան",
 
@@ -168,7 +168,7 @@ return [
 'name' => 'Անուն',
 'method' => 'Վճարման եղանակ',
 'amount_paid' => 'Վճարված գումար',
-'thank_you' => 'Շնորհակալություն LPG կառավարման համակարգն ընտրելու համար',
+'thank_you' => 'Շնորհակալություն ProGas MANAGEMENT SYSTEM կառավարման համակարգն ընտրելու համար',
 
 'manage_payments' => 'Կառավարել վճարումները',
 'order' => 'Պատվեր',
@@ -228,6 +228,109 @@ return [
 'delete_user_confirm' => 'Ջնջե՞լ օգտատիրոջը',
 'no_users_found' => 'Օգտատերեր չեն գտնվել',
 
+'reports' => 'Հաշվետվություններ',
+'from' => 'Սկսած',
+'to' => 'Մինչև',
+'apply' => 'Կիրառել',
+'reset' => 'Վերականգնել',
+'todays_sales' => 'Այսօրվա վաճառք',
+'this_month' => 'Այս ամիս',
+'top_customers' => 'Լավագույն հաճախորդներ',
+'customer' => 'Հաճախորդ',
+'orders' => 'Պատվերներ',
+'total_sales' => 'Ընդհանուր վաճառք',
+'product_sales' => 'Ապրանքների վաճառք',
+'product' => 'Ապրանք',
+'quantity_sold' => 'Վաճառված քանակ',
+'revenue' => 'Եկամուտ',
+'no_data' => 'Տվյալներ չկան',
+'no_sales_yet' => 'Դեռ վաճառքներ չկան',
+
+
+'edit_user' => 'Խմբագրել օգտատիրոջը',
+'update_user' => 'Թարմացնել օգտատիրոջը',
+'cancel' => 'Չեղարկել',
+
+'name' => 'Անուն',
+'email' => 'Էլ․ փոստ',
+'password' => 'Գաղտնաբառ',
+'leave_blank_to_keep_current' => 'թողնել դատարկ՝ ընթացիկը պահպանելու համար',
+
+'role' => 'Դեր',
+'executive_director' => 'Գործադիր տնօրեն',
+'manager' => 'Կառավարիչ',
+'driver' => 'Վարորդ',
+
+'status' => 'Կարգավիճակ',
+'active' => 'Ակտիվ',
+'inactive' => 'Ապաակտիվ',
+
+'monthly_report' => 'Ամսական հաշվետվություն',
+'export_pdf' => 'Արտահանել PDF',
+'show' => 'Ցուցադրել',
+'order' => 'Պատվեր',
+'total' => 'Ընդհանուր',
+'month' => 'Ամիս',
+'quantity' => 'Քանակ',
+
+'users' => 'Օգտատերեր',
+'manage_system_users' => 'Համակարգի օգտատերերի կառավարում',
+'add_user' => 'Ավելացնել օգտատեր',
+'search_user' => 'Փնտրել օգտատեր...',
+'search' => 'Փնտրել',
+'actions' => 'Գործողություններ',
+'delete_user_confirm' => 'Ջնջե՞լ օգտատիրոջը',
+'no_users_found' => 'Օգտատերեր չեն գտնվել',
+'save_user' => 'Պահպանել օգտատիրոջը',
+
+
+'region' => 'Մարզ',
+'city' => 'Քաղաք',
+'apartment' => 'Բնակարան',
+
+'driver_orders' => 'Ինձ նշանակված պատվերներ',
+'start_delivery' => 'Սկսել առաքումը',
+'mark_delivered' => 'Նշել որպես առաքված',
+'no_deliveries' => 'Ձեզ նշանակված պատվերներ չկան',
+'apartment' => 'Բնակարան',
+'my_deliveries' => 'Իմ առաքումները',
+'region' => 'Մարզ',
+'city' => 'Քաղաք',
+'apartment' => 'Բնակարան',
+'no_address' => 'Հասցե նշված չէ',
+'start_delivery' => 'Սկսել առաքումը',
+'mark_delivered' => 'Նշել որպես առաքված',
+'no_deliveries_assigned' => 'Ձեզ առաքումներ չեն նշանակվել',
+
+'my_deliveries' => 'Իմ առաքումները',
+'start_delivery' => 'Սկսել առաքումը',
+'mark_delivered' => 'Նշել որպես առաքված',
+'no_deliveries_assigned' => 'Առաքումներ նշանակված չեն',
+'no_address' => 'Հասցե նշված չէ',
+'region' => 'Մարզ',
+'city' => 'Քաղաք',
+'apartment' => 'Բնակարան',
+
+
+'notifications' => 'Ծանուցումներ',
+'no_notifications' => 'Նոր ծանուցումներ չկան',
+'notification' => 'Ծանուցում',
+'order_status_changed' => 'Պատվերի կարգավիճակը փոխվել է',
+'order_status' => 'Պատվերի կարգավիճակ',
+'old_status' => 'Նախկին կարգավիճակ',
+'new_status' => 'Նոր կարգավիճակ',
+
+    'product' => 'Ապրանք',
+'driver' => 'Վարորդ',
+'customer' => 'Հաճախորդ',
+'quantity' => 'Քանակ',
+'available_stock' => 'Առկա պահեստում',
+'unit_price' => 'Միավորի գին',
+'total_price' => 'Ընդհանուր գին',
+'order_date' => 'Պատվերի ամսաթիվ',
+'status' => 'Կարգավիճակ',
+
+'order_details' => 'Պատվերի մանրամասներ',
 
 
 
@@ -236,5 +339,33 @@ return [
 
 
 
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ];

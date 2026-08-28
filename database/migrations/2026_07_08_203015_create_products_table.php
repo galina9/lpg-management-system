@@ -21,7 +21,7 @@ return new class extends Migration
 
         // Gas Type
         $table->enum('gas_type', [
-            'LPG',
+            'ProGas MANAGEMENT SYSTEM',
             'Propane',
             'Butane'
         ]);

@@ -1,6 +1,6 @@
-# LPG Management System
+# ProGas MANAGEMENT SYSTEM
 
-LPG Management System is a web application for managing a liquefied petroleum gas (LPG) business.
+ProGas MANAGEMENT SYSTEM is a web application for managing a liquefied petroleum gas (ProGas MANAGEMENT SYSTEM) business.
 
 ## Features
 
@@ -31,9 +31,9 @@ LPG Management System is a web application for managing a liquefied petroleum ga
 ## Installation
 
 ```bash
-git clone git@github.com:galina9/lpg-management-system.git
+git clone git@github.com:galina9/ProGas MANAGEMENT SYSTEM-management-system.git
 
-cd lpg-management-system
+cd ProGas MANAGEMENT SYSTEM-management-system
 
 composer install
 

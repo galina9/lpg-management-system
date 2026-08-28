@@ -5,7 +5,7 @@
 <div class="container-fluid">
 
     <h2 class="fw-bold mb-4">
-        Reports
+            {{ __('messages.reports') }}
     </h2>
     <div class="card mb-4">
 
@@ -17,7 +17,7 @@
 
                 <div class="col-md-4">
 
-                    <label>From</label>
+                    <label>{{ __('messages.from') }}</label>
 
                     <input
                         type="date"
@@ -29,7 +29,7 @@
 
                 <div class="col-md-4">
 
-                    <label>To</label>
+                    <label>{{ __('messages.to') }}</label>
 
                     <input
                         type="date"
@@ -43,14 +43,14 @@
 
                     <button class="btn btn-primary me-2">
 
-                        Apply
+                        {{ __('messages.apply') }}
 
                     </button>
 
                     <a href="{{ route('reports.index') }}"
                        class="btn btn-secondary">
 
-                        Reset
+                          {{ __('messages.reset') }}
 
                     </a>
 
@@ -72,8 +72,7 @@
 
                 <div class="card-body">
 
-                    <h5>Today's Sales</h5>
-
+                    <h5>{{ __('messages.todays_sales') }}</h5>
                     <h2 class="text-success">
 
                         {{ number_format($dailySales,0,'.',' ') }} AMD
@@ -92,8 +91,7 @@
 
                 <div class="card-body">
 
-                    <h5>This Month</h5>
-
+                  <h5>{{ __('messages.this_month') }}</h5>
                     <h2 class="text-primary">
 
                         {{ number_format($monthlySales,0,'.',' ') }} AMD
@@ -109,8 +107,7 @@
 
     <div class="card-header">
 
-        <strong>Top Customers</strong>
-
+      <strong>{{ __('messages.top_customers') }}</strong>
     </div>
 
     <div class="card-body p-0">
@@ -121,11 +118,9 @@
 
                 <tr>
 
-                    <th>Customer</th>
-
-                    <th>Orders</th>
-
-                    <th>Total Sales</th>
+                    <th>{{ __('messages.customer') }}</th>
+                    <th>{{ __('messages.orders') }}</th>
+                    <th>{{ __('messages.total_sales') }}</th>
 
                 </tr>
 
@@ -162,9 +157,7 @@
                     <tr>
 
                         <td colspan="3" class="text-center">
-
-                            No data
-
+                             {{ __('messages.no_data') }}
                         </td>
 
                     </tr>
@@ -183,8 +176,7 @@
 
     <div class="card-header">
 
-        <strong>Product Sales</strong>
-
+        <strong>{{ __('messages.product_sales') }}</strong>
     </div>
 
     <div class="card-body p-0">
@@ -195,11 +187,9 @@
 
                 <tr>
 
-                    <th>Product</th>
-
-                    <th>Quantity Sold</th>
-
-                    <th>Revenue</th>
+                   <th>{{ __('messages.product') }}</th>
+                    <th>{{ __('messages.quantity_sold') }}</th>
+                    <th>{{ __('messages.revenue') }}</th>
 
                 </tr>
 
@@ -236,9 +226,7 @@
                     <tr>
 
                         <td colspan="3" class="text-center">
-
-                            No sales yet.
-
+                            {{ __('messages.no_sales_yet') }}
                         </td>
 
                     </tr>

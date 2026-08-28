@@ -14,28 +14,28 @@ class UserSeeder extends Seeder
 
         User::create([
             'name' => 'Director',
-            'email' => 'director@lpg.com',
+            'email' => 'director@ProGas MANAGEMENT SYSTEM.com',
             'password' => Hash::make('12345678'),
             'role' => 'director',
         ]);
 
         User::create([
             'name' => 'Manager',
-            'email' => 'manager@lpg.com',
+            'email' => 'manager@ProGas MANAGEMENT SYSTEM.com',
             'password' => Hash::make('12345678'),
             'role' => 'manager',
         ]);
 
         User::create([
             'name' => 'Aram Driver',
-            'email' => 'driver1@lpg.com',
+            'email' => 'driver1@ProGas MANAGEMENT SYSTEM.com',
             'password' => Hash::make('12345678'),
             'role' => 'driver',
         ]);
 
         User::create([
             'name' => 'Hayk Driver',
-            'email' => 'driver2@lpg.com',
+            'email' => 'driver2@ProGas MANAGEMENT SYSTEM.com',
             'password' => Hash::make('12345678'),
             'role' => 'driver',
         ]);

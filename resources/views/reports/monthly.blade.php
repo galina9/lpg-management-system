@@ -5,19 +5,19 @@
 <div class="container-fluid">
 
     <h2 class="mb-4" style="display: inline;">
-        Monthly Report
+        {{ __('messages.monthly_report') }}
     </h2>
-     <a
 
-	    href="{{ route('reports.monthly.pdf', ['month'=>$month]) }}"
+    <a
+        href="{{ route('reports.monthly.pdf', ['month' => $month]) }}"
+        class="btn btn-danger m-4">
 
-	    class="btn btn-danger m-4">
+        <i class="bi bi-file-earmark-pdf"></i>
 
-	    <i class="bi bi-file-earmark-pdf"></i>
+        {{ __('messages.export_pdf') }}
 
-	    Export PDF
+    </a>
 
-</a>
     <form method="GET" class="row mb-4">
 
         <div class="col-md-3">
@@ -34,13 +34,11 @@
 
             <button class="btn btn-primary">
 
-                Show
+                {{ __('messages.show') }}
 
             </button>
 
-
         </div>
-
 
     </form>
 
@@ -52,17 +50,17 @@
 
             <th>#</th>
 
-            <th>Order</th>
+            <th>{{ __('messages.order') }}</th>
 
-            <th>Customer</th>
+            <th>{{ __('messages.customer') }}</th>
 
-            <th>Driver</th>
+            <th>{{ __('messages.driver') }}</th>
 
-            <th>Product</th>
+            <th>{{ __('messages.product') }}</th>
 
-            <th>Total</th>
+            <th>{{ __('messages.total') }}</th>
 
-            <th>Status</th>
+            <th>{{ __('messages.status') }}</th>
 
         </tr>
 
@@ -70,7 +68,7 @@
 
         <tbody>
 
-        @foreach($orders as $order)
+        @forelse($orders as $order)
 
             <tr>
 
@@ -84,13 +82,27 @@
 
                 <td>{{ $order->product?->name }}</td>
 
-                <td>{{ number_format($order->total_price,0,'.',' ') }} AMD</td>
+                <td>
+                    {{ number_format($order->total_price,0,'.',' ') }} AMD
+                </td>
 
                 <td>{{ $order->status }}</td>
 
             </tr>
 
-        @endforeach
+        @empty
+
+            <tr>
+
+                <td colspan="7" class="text-center">
+
+                    {{ __('messages.no_data') }}
+
+                </td>
+
+            </tr>
+
+        @endforelse
 
         </tbody>
 

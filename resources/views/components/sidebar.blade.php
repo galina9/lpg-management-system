@@ -12,7 +12,7 @@
 
         <div class="sidebar-title">
 
-            <h4>LPG ERP</h4>
+            <h4>ProGas</h4>
 
             <small>{{ __('messages.management_system') }}</small>
 

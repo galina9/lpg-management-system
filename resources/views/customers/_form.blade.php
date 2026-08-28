@@ -2,9 +2,9 @@
 
     <div class="col-md-6 mb-3">
 
-       <label class="form-label">
-    {{ __('messages.full_name') }} *
-</label>
+        <label class="form-label">
+            {{ __('messages.full_name') }} *
+        </label>
 
         <input
             type="text"
@@ -18,11 +18,12 @@
 
     </div>
 
+
     <div class="col-md-6 mb-3">
 
-       <label class="form-label">
-    {{ __('messages.phone') }} *
-</label>
+        <label class="form-label">
+            {{ __('messages.phone') }} *
+        </label>
 
         <input
             type="text"
@@ -36,11 +37,12 @@
 
     </div>
 
+
     <div class="col-md-6 mb-3">
 
         <label class="form-label">
-    {{ __('messages.email') }}
-</label>
+            {{ __('messages.email') }}
+        </label>
 
         <input
             type="email"
@@ -54,11 +56,12 @@
 
     </div>
 
+
     <div class="col-md-6 mb-3">
 
         <label class="form-label">
-    {{ __('messages.status') }}
-</label>
+            {{ __('messages.status') }}
+        </label>
 
         <select
             name="status"
@@ -78,16 +81,91 @@
 
     </div>
 
-    <div class="col-12 mb-3">
 
-      <label class="form-label">
-    {{ __('messages.address') }}
-</label>
+    {{-- Region --}}
 
-        <textarea
+    <div class="col-md-6 mb-3">
+
+        <label class="form-label">
+            {{ __('messages.region') }}
+        </label>
+
+        <input
+            type="text"
+            name="region"
+            class="form-control @error('region') is-invalid @enderror"
+            value="{{ old('region', $customer->region ?? '') }}"
+            placeholder="{{ __('messages.region') }}">
+
+        @error('region')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+
+    </div>
+
+
+    {{-- City --}}
+
+    <div class="col-md-6 mb-3">
+
+        <label class="form-label">
+            {{ __('messages.city') }}
+        </label>
+
+        <input
+            type="text"
+            name="city"
+            class="form-control @error('city') is-invalid @enderror"
+            value="{{ old('city', $customer->city ?? '') }}"
+            placeholder="{{ __('messages.city') }}">
+
+        @error('city')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+
+    </div>
+
+
+    {{-- Address --}}
+
+    <div class="col-md-6 mb-3">
+
+        <label class="form-label">
+            {{ __('messages.address') }}
+        </label>
+
+        <input
+            type="text"
             name="address"
-            rows="3"
-            class="form-control">{{ old('address', $customer->address ?? '') }}</textarea>
+            class="form-control @error('address') is-invalid @enderror"
+            value="{{ old('address', $customer->address ?? '') }}"
+            placeholder="{{ __('messages.address') }}">
+
+        @error('address')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+
+    </div>
+
+
+    {{-- Apartment --}}
+
+    <div class="col-md-6 mb-3">
+
+        <label class="form-label">
+            {{ __('messages.apartment') }}
+        </label>
+
+        <input
+            type="text"
+            name="apartment"
+            class="form-control @error('apartment') is-invalid @enderror"
+            value="{{ old('apartment', $customer->apartment ?? '') }}"
+           placeholder="{{ __('messages.apartment') }}">
+
+        @error('apartment')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
 
     </div>
 

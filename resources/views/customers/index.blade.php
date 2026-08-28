@@ -22,7 +22,7 @@
 
             <i class="bi bi-plus-circle me-2"></i>
 
-           {{ __('messages.add_customer') }}
+            {{ __('messages.add_customer') }}
 
         </a>
 
@@ -88,7 +88,14 @@
                             <th>{{ __('messages.full_name') }}</th>
                             <th>{{ __('messages.phone') }}</th>
                             <th>{{ __('messages.email') }}</th>
+
+                            <th>{{ __('messages.region') }}</th>
+                            <th>{{ __('messages.city') }}</th>
+                            <th>{{ __('messages.address') }}</th>
+                            <th>{{ __('messages.apartment') }}</th>
+
                             <th>{{ __('messages.status') }}</th>
+
                             <th width="140">{{ __('messages.actions') }}</th>
 
                         </tr>
@@ -109,9 +116,17 @@
 
                             <td>{{ $customer->email }}</td>
 
+                            <td>{{ $customer->region ?? '—' }}</td>
+
+                            <td>{{ $customer->city ?? '—' }}</td>
+
+                            <td>{{ $customer->address ?? '—' }}</td>
+
+                            <td>{{ $customer->apartment ?? '—' }}</td>
+
                             <td>
 
-                                @if($customer->status=='active')
+                                @if($customer->status == 'active')
 
                                     <span class="badge bg-success">
                                         {{ __('messages.active') }}
@@ -161,7 +176,7 @@
 
                         <tr>
 
-                            <td colspan="6"
+                            <td colspan="10"
                                 class="text-center py-5">
 
                                 {{ __('messages.no_customers_found') }}

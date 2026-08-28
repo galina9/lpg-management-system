@@ -99,7 +99,17 @@ class OrderController extends Controller
             ->route('orders.index')
             ->with('success', 'Order created successfully.');
     }
+        public function show(Order $order)
+    {
+        $order->load([
+            'customer',
+            'product',
+            'driver',
+            'payment'
+        ]);
 
+        return view('orders.show', compact('order'));
+    }
   
   public function edit(Order $order)
 {

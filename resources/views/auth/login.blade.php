@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Login - LPG ERP</title>
+    <title>Login - ProGas</title>
 
     @vite(['resources/js/app.js'])
 </head>
@@ -22,7 +22,7 @@
                 <div class="card-body p-4">
 
                     <h2 class="text-center mb-4">
-                        LPG ERP
+                        ProGas
                     </h2>
 
                     @if(session('status'))

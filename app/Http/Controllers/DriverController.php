@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\User;
+use App\Notifications\OrderStatusChanged;
 
 class DriverController extends Controller
 {
@@ -16,20 +18,46 @@ class DriverController extends Controller
             ->latest()
             ->get();
 
-        return view('driver.index', compact('orders'));
+        return view(
+            'driver.index',
+            compact('orders')
+        );
     }
+
+
     public function start(Order $order)
     {
         if ($order->driver_id != auth()->id()) {
             abort(403);
         }
 
+
+        $oldStatus =
+            $order->status;
+
+
+        $newStatus =
+            'On Delivery';
+
+
         $order->update([
-            'status' => 'On Delivery'
+            'status' => $newStatus
         ]);
 
-        return back()->with('success', 'Delivery started.');
+
+        $this->sendStatusNotification(
+            $order,
+            $oldStatus,
+            $newStatus
+        );
+
+
+        return back()->with(
+            'success',
+            'Delivery started.'
+        );
     }
+
 
     public function complete(Order $order)
     {
@@ -37,10 +65,63 @@ class DriverController extends Controller
             abort(403);
         }
 
+
+        $oldStatus =
+            $order->status;
+
+
+        $newStatus =
+            'Delivered';
+
+
         $order->update([
-            'status' => 'Delivered'
+            'status' => $newStatus
         ]);
 
-        return back()->with('success', 'Order delivered successfully.');
+
+        $this->sendStatusNotification(
+            $order,
+            $oldStatus,
+            $newStatus
+        );
+
+
+        return back()->with(
+            'success',
+            'Order delivered successfully.'
+        );
+    }
+
+
+    private function sendStatusNotification(
+        Order $order,
+        string $oldStatus,
+        string $newStatus
+    ) {
+
+        $driver =
+            auth()->user();
+
+
+        $users =
+            User::whereIn(
+                'role',
+                ['director', 'manager']
+            )->get();
+
+
+        foreach ($users as $user) {
+
+            $user->notify(
+                new OrderStatusChanged(
+                    $order,
+                    $oldStatus,
+                    $newStatus,
+                    $driver
+                )
+            );
+
+        }
+
     }
 }
