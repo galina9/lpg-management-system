@@ -10,6 +10,13 @@
             {{ __('messages.order_details') }}
         </h2>
 
+        <a href="{{ route('payments.create', ['order' => $order->id]) }}" class="btn btn-success">
+            <i class="bi bi-plus-circle me-1"></i>
+            {{ __('messages.add_payment') }}
+
+        </a>
+
+
         <a href="{{ route('orders.index') }}" class="btn btn-secondary">
             {{ __('messages.back') }}
         </a>
@@ -90,7 +97,177 @@
                     <strong>{{ __('messages.total_price') }}:</strong>
                     {{ number_format($order->total_price, 2) }}
                 </div>
+                {{-- Payment Summary --}}
+                @php
+                    $paidAmount = $order->payments->sum('amount');
+                    $remainingAmount = max(0, $order->total_price - $paidAmount);
+                @endphp
 
+                <div class="col-md-6 mb-3">
+                    <strong>{{ __('messages.paid_amount') }}:</strong>
+                    {{ number_format($paidAmount, 2) }}
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>{{ __('messages.remaining_amount') }}:</strong>
+                    {{ number_format($remainingAmount, 2) }}
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>{{ __('messages.payment_status') }}:</strong>
+
+                    @if($paidAmount <= 0)
+
+                        <span class="badge bg-danger">
+                            {{ __('messages.unpaid') }}
+                        </span>
+
+                    @elseif($paidAmount < $order->total_price)
+
+                        <span class="badge bg-warning text-dark">
+                            {{ __('messages.partial') }}
+                        </span>
+
+                    @else
+
+                        <span class="badge bg-success">
+                            {{ __('messages.paid') }}
+                        </span>
+
+                    @endif
+                </div>
+                {{-- Payments History --}}
+<div class="col-12 mt-4">
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-light">
+
+            <h5 class="mb-0 fw-bold">
+                {{ __('messages.payment_history') }}
+            </h5>
+
+        </div>
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead>
+                        <tr>
+
+                            <th>
+                                {{ __('messages.payment_date') }}
+                            </th>
+
+                            <th>
+                                {{ __('messages.amount') }}
+                            </th>
+
+                            <th>
+                                {{ __('messages.payment_method') }}
+                            </th>
+
+                            <th>
+                                {{ __('messages.status') }}
+                            </th>
+
+                            <th>
+                                {{ __('messages.note') }}
+                            </th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @forelse($order->payments as $payment)
+
+                            <tr>
+
+                                <td>
+                                    {{ $payment->payment_date }}
+                                </td>
+
+                                <td class="fw-bold">
+                                    {{ number_format($payment->amount, 2) }} AMD
+                                </td>
+
+                                <td>
+
+                                    @if($payment->method === 'Cash')
+
+                                        {{ __('messages.cash') }}
+
+                                    @elseif($payment->method === 'Card')
+
+                                        {{ __('messages.card') }}
+
+                                    @else
+
+                                        {{ __('messages.bank_transfer') }}
+
+                                    @endif
+
+                                </td>
+
+                                <td>
+
+                                    @if($payment->status === 'Paid')
+
+                                        <span class="badge bg-success">
+                                            {{ __('messages.paid') }}
+                                        </span>
+
+                                    @elseif($payment->status === 'Partial')
+
+                                        <span class="badge bg-warning text-dark">
+                                            {{ __('messages.partial') }}
+                                        </span>
+
+                                    @else
+
+                                        <span class="badge bg-danger">
+                                            {{ __('messages.unpaid') }}
+                                        </span>
+
+                                    @endif
+
+                                </td>
+
+                                <td>
+                                    {{ $payment->note ?? '-' }}
+                                </td>
+
+                            </tr>
+
+                        @empty
+
+                            <tr>
+
+                                <td colspan="5" class="text-center text-muted py-4">
+
+                                    {{ __('messages.no_payments_found') }}
+
+                                </td>
+
+                            </tr>
+
+                        @endforelse
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
                 {{-- Driver --}}
                 <div class="col-md-6 mb-3">
                     <strong>{{ __('messages.driver') }}:</strong>

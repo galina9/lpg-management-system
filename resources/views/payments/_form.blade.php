@@ -16,7 +16,7 @@
 
                 <option
                     value="{{ $order->id }}"
-                    {{ old('order_id', $payment->order_id ?? $selectedOrder->id ?? '') == $order->id ? 'selected' : '' }}>
+                   {{ old('order_id', $payment->order_id ?? ($selectedOrder->id ?? '')) == $order->id ? 'selected' : '' }}>
 
                     {{ $order->order_number }}
                     -

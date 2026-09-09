@@ -360,16 +360,8 @@
 
 </audio>
 
-
 <script>
-
 document.addEventListener('DOMContentLoaded', function () {
-
-    /*
-    |--------------------------------------------------------------------------
-    | Elements
-    |--------------------------------------------------------------------------
-    */
 
     const notificationButton =
         document.getElementById('notificationButton');
@@ -383,222 +375,505 @@ document.addEventListener('DOMContentLoaded', function () {
     const notificationBadge =
         document.getElementById('notificationBadge');
 
+    const statusNotificationContainer =
+        document.getElementById('statusNotificationContainer');
+
     const notificationSound =
         document.getElementById('notificationSound');
 
-    const popupContainer =
-        document.getElementById('statusNotificationContainer');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Keep track of notifications already shown as popup
+    |--------------------------------------------------------------------------
+    */
+
+    let shownNotifications =
+        new Set();
 
 
     /*
     |--------------------------------------------------------------------------
-    | State
+    | Notification dropdown
     |--------------------------------------------------------------------------
     */
 
-    let knownNotificationIds = new Set();
+    if (notificationButton && notificationDropdown) {
 
+        notificationButton.addEventListener(
+            'click',
+            function (event) {
 
-    /*
-    |--------------------------------------------------------------------------
-    | Existing notifications
-    |
-    | These are already on the page.
-    | Do NOT show popup or sound for them.
-    |--------------------------------------------------------------------------
-    */
+                event.stopPropagation();
 
-    document
-        .querySelectorAll('.notification-item[data-id]')
-        .forEach(function (item) {
+                notificationDropdown.classList.toggle('show');
 
-            knownNotificationIds.add(
-                String(item.dataset.id)
-            );
-
-        });
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | LocalStorage
-    |
-    | Prevent the same notification from showing the popup
-    | again after changing pages / refreshing.
-    |--------------------------------------------------------------------------
-    */
-
-    const shownStorageKey =
-        'progas_shown_notifications';
-
-
-    function getShownNotifications()
-    {
-        try {
-
-            return JSON.parse(
-                localStorage.getItem(
-                    shownStorageKey
-                ) || '[]'
-            );
-
-        } catch (error) {
-
-            return [];
-
-        }
-    }
-
-
-    function saveShownNotification(id)
-    {
-        const shown =
-            getShownNotifications();
-
-        if (!shown.includes(String(id))) {
-
-            shown.push(String(id));
-
-            /*
-            | Keep only last 100
-            */
-
-            if (shown.length > 100) {
-                shown.shift();
             }
+        );
 
-            localStorage.setItem(
-                shownStorageKey,
-                JSON.stringify(shown)
-            );
 
-        }
+        document.addEventListener(
+            'click',
+            function (event) {
+
+                if (
+                    !notificationDropdown.contains(event.target) &&
+                    !notificationButton.contains(event.target)
+                ) {
+
+                    notificationDropdown.classList.remove('show');
+
+                }
+
+            }
+        );
+
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | Badge
+    | Update bell badge
     |--------------------------------------------------------------------------
     */
 
-    function updateBadge(count)
-    {
-        count = Number(count) || 0;
+    function updateBadge(count) {
+
+        if (!notificationBadge) {
+            return;
+        }
+
+
+        count = parseInt(count) || 0;
+
 
         if (count > 0) {
 
-            notificationBadge.textContent =
-                count > 99 ? '99+' : count;
+            notificationBadge.textContent = count;
 
             notificationBadge.style.display =
                 'inline-flex';
 
         } else {
 
+            notificationBadge.textContent = '0';
+
             notificationBadge.style.display =
                 'none';
 
         }
+
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | Update empty message
+    | Delete notification
+    |--------------------------------------------------------------------------
+    | Միայն փոքր ×-ը ջնջում է notification-ը
     |--------------------------------------------------------------------------
     */
 
-    function updateEmptyMessage()
-    {
-        const items =
-            notificationList.querySelectorAll(
-                '.notification-item'
-            );
+    function deleteNotification(id, element) {
 
-        let empty =
-            document.getElementById(
-                'notificationEmpty'
-            );
+        fetch('/notifications/' + id, {
 
-        if (items.length === 0) {
+            method: 'DELETE',
 
-            if (!empty) {
+            headers: {
 
-                empty =
-                    document.createElement('div');
+                'X-CSRF-TOKEN':
+                    document
+                        .querySelector(
+                            'meta[name="csrf-token"]'
+                        )
+                        .getAttribute('content'),
 
-                empty.id =
-                    'notificationEmpty';
-
-                empty.className =
-                    'notification-empty';
-
-                empty.innerHTML = `
-                    <i class="bi bi-bell-slash"></i>
-                    <div>
-                        {{ __('messages.no_notifications') }}
-                    </div>
-                `;
-
-                notificationList.appendChild(
-                    empty
-                );
+                'Accept':
+                    'application/json',
 
             }
 
-        } else {
+        })
 
-            if (empty) {
-                empty.remove();
+        .then(response => {
+
+            if (!response.ok) {
+                throw new Error('Delete failed');
             }
 
+            return response.json();
+
+        })
+
+        .then(data => {
+
+            if (element) {
+                element.remove();
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Re-read actual unread count from server
+            |--------------------------------------------------------------------------
+            */
+
+            loadNotifications(false);
+
+        })
+
+        .catch(error => {
+
+            console.error(
+                'Notification delete error:',
+                error
+            );
+
+        });
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Open notification
+    |--------------------------------------------------------------------------
+    | Սեղմելը ՉԻ ջնջում և ՉԻ markAsRead անում
+    |--------------------------------------------------------------------------
+    */
+
+    if (notificationList) {
+
+        notificationList.addEventListener(
+            'click',
+            function (event) {
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Delete button
+                |--------------------------------------------------------------------------
+                */
+
+                const deleteButton =
+                    event.target.closest(
+                        '.notification-delete'
+                    );
+
+
+                if (deleteButton) {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
+
+                    const item =
+                        deleteButton.closest(
+                            '.notification-item'
+                        );
+
+
+                    if (!item) {
+                        return;
+                    }
+
+
+                    const id =
+                        item.dataset.id;
+
+
+                    deleteNotification(
+                        id,
+                        item
+                    );
+
+
+                    return;
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Notification itself
+                |--------------------------------------------------------------------------
+                */
+
+                const item =
+                    event.target.closest(
+                        '.notification-item'
+                    );
+
+
+                if (!item) {
+                    return;
+                }
+
+
+                const orderId =
+                    item.dataset.orderId;
+
+
+                if (orderId) {
+
+                    window.location.href =
+                        '/orders/' + orderId;
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Create bottom popup
+    |--------------------------------------------------------------------------
+    */
+
+    function showNotificationPopup(notification) {
+
+        if (!statusNotificationContainer) {
+            return;
         }
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Escape HTML
-    |--------------------------------------------------------------------------
-    */
-
-    function escapeHtml(value)
-    {
-        const div =
-            document.createElement('div');
-
-        div.textContent =
-            value ?? '';
-
-        return div.innerHTML;
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Add notification to dropdown
-    |--------------------------------------------------------------------------
-    */
-
-    function addNotification(notification)
-    {
-        const id =
-            String(notification.id);
 
 
         /*
-        | Don't add duplicates
+        |--------------------------------------------------------------------------
+        | Prevent duplicate popup
+        |--------------------------------------------------------------------------
         */
 
         if (
-            notificationList.querySelector(
-                `.notification-item[data-id="${CSS.escape(id)}"]`
+            shownNotifications.has(
+                notification.id
             )
         ) {
 
             return;
 
+        }
+
+
+        shownNotifications.add(
+            notification.id
+        );
+
+
+        const popup =
+            document.createElement('div');
+
+        popup.className =
+            'status-notification-popup';
+
+
+        popup.innerHTML = `
+
+            <div class="status-notification-icon">
+                <i class="bi bi-truck"></i>
+            </div>
+
+
+            <div class="status-notification-content">
+
+                <div class="status-notification-title">
+                    Order Status Changed
+                </div>
+
+
+                <div class="status-notification-order">
+                    ${notification.order_number || ''}
+                </div>
+
+
+                <div class="status-notification-status">
+
+                    ${notification.old_status || ''}
+
+                    <span>→</span>
+
+                    ${notification.new_status || ''}
+
+                </div>
+
+
+                <small>
+
+                    ${notification.driver_name || ''}
+
+                    ·
+
+                    ${notification.created_at || ''}
+
+                </small>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="status-notification-close"
+                aria-label="Close">
+
+                ×
+
+            </button>
+
+        `;
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Click popup → open order
+        |--------------------------------------------------------------------------
+        */
+
+        popup.addEventListener(
+            'click',
+            function (event) {
+
+                /*
+                | Don't open order when × is clicked
+                */
+
+                if (
+                    event.target.closest(
+                        '.status-notification-close'
+                    )
+                ) {
+
+                    return;
+
+                }
+
+
+                if (notification.order_id) {
+
+                    window.location.href =
+                        '/orders/' +
+                        notification.order_id;
+
+                }
+
+            }
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Close popup only
+        |--------------------------------------------------------------------------
+        | IMPORTANT:
+        | Notification-ը չի ջնջվում
+        | Notification-ը չի markAsRead արվում
+        |--------------------------------------------------------------------------
+        */
+
+        const closeButton =
+            popup.querySelector(
+                '.status-notification-close'
+            );
+
+
+        if (closeButton) {
+
+            closeButton.addEventListener(
+                'click',
+                function (event) {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
+                    popup.remove();
+
+                }
+            );
+
+        }
+
+
+        statusNotificationContainer.appendChild(
+            popup
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Sound
+        |--------------------------------------------------------------------------
+        */
+
+        if (notificationSound) {
+
+            notificationSound.currentTime = 0;
+
+            notificationSound.play()
+                .catch(function (error) {
+
+                    console.log(
+                        'Notification sound blocked:',
+                        error
+                    );
+
+                });
+
+        }
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Render notification in dropdown
+    |--------------------------------------------------------------------------
+    */
+
+    function addNotificationToDropdown(
+        notification
+    ) {
+
+        if (!notificationList) {
+            return;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Don't duplicate
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            notificationList.querySelector(
+                '[data-id="' +
+                notification.id +
+                '"]'
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Remove empty message
+        |--------------------------------------------------------------------------
+        */
+
+        const empty =
+            document.getElementById(
+                'notificationEmpty'
+            );
+
+
+        if (empty) {
+            empty.remove();
         }
 
 
@@ -611,7 +886,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
         item.dataset.id =
-            id;
+            notification.id;
 
 
         item.dataset.orderId =
@@ -635,54 +910,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 <div class="notification-title">
 
-                    ${escapeHtml(
-                        notification.title ||
-                        'Order Status Changed'
-                    )}
+                    ${notification.title ||
+                    'Order Status Changed'}
 
                 </div>
 
 
                 <div class="notification-message">
 
-                    ${escapeHtml(
-                        notification.order_number ||
-                        ''
-                    )}
+                    ${notification.order_number || ''}
 
                 </div>
 
 
                 <div class="notification-message">
 
-                    ${escapeHtml(
-                        notification.old_status ||
-                        ''
-                    )}
+                    ${notification.old_status || ''}
 
                     →
 
-                    ${escapeHtml(
-                        notification.new_status ||
-                        ''
-                    )}
+                    ${notification.new_status || ''}
 
                 </div>
 
 
                 <small class="text-muted">
 
-                    ${escapeHtml(
-                        notification.driver_name ||
-                        ''
-                    )}
+                    ${notification.driver_name || ''}
 
                     ·
 
-                    ${escapeHtml(
-                        notification.created_at ||
-                        ''
-                    )}
+                    ${notification.created_at || ''}
 
                 </small>
 
@@ -692,7 +950,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <button
                 type="button"
                 class="notification-delete"
-                data-notification-id="${escapeHtml(id)}"
+                data-notification-id="${notification.id}"
                 title="Delete">
 
                 ×
@@ -702,679 +960,149 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
 
 
-        /*
-        | Put newest notification at the top
-        */
-
-        const empty =
-            document.getElementById(
-                'notificationEmpty'
-            );
-
-
-        if (empty) {
-            empty.remove();
-        }
-
-
-        notificationList.prepend(item);
-
-
-        /*
-        | Keep maximum 10 in dropdown
-        */
-
-        const items =
-            notificationList.querySelectorAll(
-                '.notification-item'
-            );
-
-
-        if (items.length > 10) {
-
-            items[items.length - 1].remove();
-
-        }
-
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Play notification sound
-    |--------------------------------------------------------------------------
-    */
-
-    function playNotificationSound()
-    {
-        if (!notificationSound) {
-            return;
-        }
-
-
-        notificationSound.currentTime = 0;
-
-
-        const promise =
-            notificationSound.play();
-
-
-        if (
-            promise &&
-            typeof promise.catch === 'function'
-        ) {
-
-            promise.catch(function (error) {
-
-                /*
-                | Browser may block autoplay.
-                | After user interaction it will work.
-                */
-
-                console.log(
-                    'Notification sound was blocked:',
-                    error
-                );
-
-            });
-
-        }
-
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Popup
-    |--------------------------------------------------------------------------
-    */
-
-    function showNotificationPopup(notification)
-    {
-        const popup =
-            document.createElement('div');
-
-
-        popup.className =
-            'status-notification-popup';
-
-
-        popup.dataset.notificationId =
-            notification.id;
-
-
-        popup.dataset.orderId =
-            notification.order_id || '';
-
-
-        popup.innerHTML = `
-
-            <div class="status-notification-header">
-
-                <strong>
-
-                    🔔 Order status changed
-
-                </strong>
-
-
-                <button
-                    type="button"
-                    class="status-notification-close">
-
-                    ×
-
-                </button>
-
-            </div>
-
-
-            <div class="status-notification-body">
-
-                <div class="status-notification-icon">
-
-                    <i class="bi bi-bell-fill"></i>
-
-                </div>
-
-
-                <div class="status-notification-content">
-
-                    <div class="status-notification-order">
-
-                        ${escapeHtml(
-                            notification.order_number ||
-                            ''
-                        )}
-
-                    </div>
-
-
-                    <div class="status-notification-status">
-
-                        ${escapeHtml(
-                            notification.old_status ||
-                            ''
-                        )}
-
-                        →
-
-                        ${escapeHtml(
-                            notification.new_status ||
-                            ''
-                        )}
-
-                    </div>
-
-
-                    <div class="status-notification-driver">
-
-                        ${escapeHtml(
-                            notification.driver_name ||
-                            ''
-                        )}
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        `;
-
-
-        popupContainer.appendChild(
-            popup
+        notificationList.prepend(
+            item
         );
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | Popup X
-        |
-        | VERY IMPORTANT:
-        | Do NOT delete/read the notification.
-        | Only close the visual popup.
-        |--------------------------------------------------------------------------
-        */
-
-        popup
-            .querySelector(
-                '.status-notification-close'
-            )
-            .addEventListener(
-                'click',
-                function (event) {
-
-                    event.stopPropagation();
-
-                    popup.remove();
-
-                }
-            );
+    }
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | Popup click → open order
-        |--------------------------------------------------------------------------
-        */
+    /*
+    |--------------------------------------------------------------------------
+    | Load notifications
+    |--------------------------------------------------------------------------
+    */
 
-        popup.addEventListener(
-            'click',
-            function (event) {
+    function loadNotifications(
+        showPopup = true
+    ) {
 
-                if (
-                    event.target.closest(
-                        '.status-notification-close'
-                    )
-                ) {
+        fetch('/notifications/latest', {
 
-                    return;
+            headers: {
 
-                }
-
-
-                const orderId =
-                    popup.dataset.orderId;
-
-
-                if (orderId) {
-
-                    window.location.href =
-                        `/orders/${orderId}`;
-
-                }
+                'Accept':
+                    'application/json',
 
             }
-        );
 
+        })
 
-        /*
-        |--------------------------------------------------------------------------
-        | Automatically close popup after 7 seconds
-        |
-        | Notification remains in database.
-        |--------------------------------------------------------------------------
-        */
-
-        setTimeout(
-            function () {
-
-                if (popup.parentElement) {
-
-                    popup.remove();
-
-                }
-
-            },
-            7000
-        );
-
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Check notifications
-    |--------------------------------------------------------------------------
-    */
-
-    async function checkNotifications()
-    {
-        try {
-
-            const response =
-                await fetch(
-                    '{{ route('notifications.latest') }}',
-                    {
-                        method: 'GET',
-
-                        headers: {
-                            'Accept':
-                                'application/json',
-
-                            'X-Requested-With':
-                                'XMLHttpRequest'
-                        },
-
-                        cache: 'no-store'
-                    }
-                );
-
+        .then(response => {
 
             if (!response.ok) {
-                return;
+                throw new Error(
+                    'Notification request failed'
+                );
             }
 
+            return response.json();
+
+        })
+
+        .then(data => {
+
+            /*
+            |--------------------------------------------------------------------------
+            | IMPORTANT
+            |--------------------------------------------------------------------------
+            | web.php-ն վերադարձնում է object,
+            | ոչ թե ուղղակի array
+            |--------------------------------------------------------------------------
+            */
 
             const notifications =
-                await response.json();
+                data.notifications || [];
 
 
             /*
-            | Badge = ALL unread notifications
+            |--------------------------------------------------------------------------
+            | Update bell number
+            |--------------------------------------------------------------------------
             */
 
             updateBadge(
-                notifications.length
+                data.unread_count
             );
 
 
             /*
-            | Process notifications
+            |--------------------------------------------------------------------------
+            | Add notifications to dropdown
+            |--------------------------------------------------------------------------
             */
 
             notifications.forEach(
                 function (notification) {
 
-                    const id =
-                        String(notification.id);
-
-
-                    /*
-                    | Add to dropdown if missing
-                    */
-
-                    addNotification(
+                    addNotificationToDropdown(
                         notification
                     );
-
-
-                    /*
-                    | New notification?
-                    */
-
-                    if (
-                        !knownNotificationIds.has(id)
-                    ) {
-
-                        knownNotificationIds.add(
-                            id
-                        );
-
-
-                        const shown =
-                            getShownNotifications();
-
-
-                        /*
-                        | Show popup + sound only once
-                        */
-
-                        if (
-                            !shown.includes(id)
-                        ) {
-
-                            saveShownNotification(
-                                id
-                            );
-
-
-                            showNotificationPopup(
-                                notification
-                            );
-
-
-                            playNotificationSound();
-
-                        }
-
-                    }
 
                 }
             );
 
 
-            updateEmptyMessage();
+            /*
+            |--------------------------------------------------------------------------
+            | Show popup ONLY for new notifications
+            |--------------------------------------------------------------------------
+            */
 
-        }
-        catch (error) {
+            if (showPopup) {
+
+                notifications.forEach(
+                    function (notification) {
+
+                        showNotificationPopup(
+                            notification
+                        );
+
+                    }
+                );
+
+            }
+
+        })
+
+        .catch(error => {
 
             console.error(
-                'Notification polling error:',
+                'Notification loading error:',
                 error
             );
 
-        }
+        });
 
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | Notification bell
+    | Initial load
     |--------------------------------------------------------------------------
     */
 
-    notificationButton.addEventListener(
-        'click',
-        function (event) {
-
-            event.stopPropagation();
-
-            notificationDropdown.classList.toggle(
-                'show'
-            );
-
-        }
-    );
+    loadNotifications(false);
 
 
     /*
     |--------------------------------------------------------------------------
-    | Close dropdown when clicking outside
+    | Check for new notifications
+    |--------------------------------------------------------------------------
+    | Ամեն 5 վայրկյանը մեկ
     |--------------------------------------------------------------------------
     */
-
-    document.addEventListener(
-        'click',
-        function (event) {
-
-            if (
-                !event.target.closest(
-                    '.notification-wrapper'
-                )
-            ) {
-
-                notificationDropdown.classList.remove(
-                    'show'
-                );
-
-            }
-
-        }
-    );
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Notification click
-    |
-    | Opens ONLY the order.
-    |
-    | Example:
-    | /orders/6
-    |
-    | It does NOT mark it as read.
-    |--------------------------------------------------------------------------
-    */
-
-    notificationList.addEventListener(
-        'click',
-        function (event) {
-
-            /*
-            | X button has its own behavior.
-            */
-
-            if (
-                event.target.closest(
-                    '.notification-delete'
-                )
-            ) {
-
-                return;
-
-            }
-
-
-            const item =
-                event.target.closest(
-                    '.notification-item'
-                );
-
-
-            if (!item) {
-                return;
-            }
-
-
-            const orderId =
-                item.dataset.orderId;
-
-
-            if (!orderId) {
-                return;
-            }
-
-
-            window.location.href =
-                `/orders/${orderId}`;
-
-        }
-    );
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Delete notification
-    |
-    | ONLY the X deletes it.
-    |--------------------------------------------------------------------------
-    */
-
-    notificationList.addEventListener(
-        'click',
-        async function (event) {
-
-            const deleteButton =
-                event.target.closest(
-                    '.notification-delete'
-                );
-
-
-            if (!deleteButton) {
-                return;
-            }
-
-
-            event.preventDefault();
-
-            event.stopPropagation();
-
-
-            const notificationId =
-                deleteButton.dataset.notificationId;
-
-
-            try {
-
-                const response =
-                    await fetch(
-                        `/notifications/${notificationId}`,
-                        {
-                            method: 'DELETE',
-
-                            headers: {
-
-                                'X-CSRF-TOKEN':
-                                    document
-                                        .querySelector(
-                                            'meta[name="csrf-token"]'
-                                        )
-                                        .getAttribute(
-                                            'content'
-                                        ),
-
-                                'Accept':
-                                    'application/json',
-
-                                'X-Requested-With':
-                                    'XMLHttpRequest'
-
-                            }
-                        }
-                    );
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        'Notification delete failed'
-                    );
-
-                }
-
-
-                /*
-                | Remove from dropdown
-                */
-
-                const item =
-                    deleteButton.closest(
-                        '.notification-item'
-                    );
-
-
-                if (item) {
-                    item.remove();
-                }
-
-
-                /*
-                | Remove from known IDs
-                */
-
-                knownNotificationIds.delete(
-                    String(notificationId)
-                );
-
-
-                /*
-                | Remove from localStorage
-                */
-
-                const shown =
-                    getShownNotifications()
-                        .filter(
-                            function (id) {
-
-                                return String(id) !==
-                                    String(notificationId);
-
-                            }
-                        );
-
-
-                localStorage.setItem(
-                    shownStorageKey,
-                    JSON.stringify(shown)
-                );
-
-
-                /*
-                | Recalculate badge from server
-                */
-
-                await checkNotifications();
-
-
-                updateEmptyMessage();
-
-            }
-            catch (error) {
-
-                console.error(
-                    'Notification delete error:',
-                    error
-                );
-
-            }
-
-        }
-    );
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Initial badge
-    |--------------------------------------------------------------------------
-    */
-
-    updateBadge(
-        document.querySelectorAll(
-            '.notification-item'
-        ).length
-    );
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Start polling
-    |
-    | ONLY ONE polling interval.
-    |--------------------------------------------------------------------------
-    */
-
-    checkNotifications();
-
 
     setInterval(
-        checkNotifications,
+        function () {
+
+            loadNotifications(true);
+
+        },
         5000
     );
 
-});
 
+});
 </script>

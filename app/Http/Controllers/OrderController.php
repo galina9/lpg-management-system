@@ -24,7 +24,7 @@ class OrderController extends Controller
 
     public function index(Request $request)
     {
-       $query = Order::with(['customer','product','driver', 'payment']);
+       $query = Order::with(['customer','product','driver', 'payments']);
 
         if ($request->filled('search')) {
             $query->where('order_number', 'like', '%' . $request->search . '%')
@@ -63,6 +63,7 @@ class OrderController extends Controller
         $request->validate([
             'product_id'      => 'required|exists:products,id',
             'customer_id' => 'required|exists:customers,id',
+            'unit_price' => 'required|numeric|min:0',
             'quantity'        => 'required|numeric|min:1',
             'order_date'      => 'required|date',
             'status'          => 'required',
@@ -84,8 +85,8 @@ class OrderController extends Controller
                 'product_id'     => $product->id,
                 'customer_id'    => $request->customer_id,
                 'quantity'       => $request->quantity,
-                'unit_price'     => $product->sale_price,
-                'total_price'    => $product->sale_price * $request->quantity,
+                'unit_price' => $request->unit_price,
+                'total_price' => $request->unit_price * $request->quantity,
                 'order_date'     => $request->order_date,
                 'status'         => $request->status,
                 'driver_id'      => $request->driver_id,
@@ -105,7 +106,7 @@ class OrderController extends Controller
             'customer',
             'product',
             'driver',
-            'payment'
+            'payments'
         ]);
 
         return view('orders.show', compact('order'));
@@ -135,6 +136,7 @@ class OrderController extends Controller
     $request->validate([
         'product_id'  => 'required|exists:products,id',
         'customer_id' => 'required|exists:customers,id',
+        'unit_price' => 'required|numeric|min:0',
         'quantity'    => 'required|numeric|min:1',
         'order_date'  => 'required|date',
         'status'      => 'required',
@@ -293,8 +295,8 @@ class OrderController extends Controller
         'product_id'  => $newProduct->id,
         'customer_id' => $request->customer_id,
         'quantity'    => $newQuantity,
-        'unit_price'  => $newProduct->sale_price,
-        'total_price' => $newProduct->sale_price * $newQuantity,
+        'unit_price' => $request->unit_price,
+        'total_price' => $request->unit_price * $newQuantity,
         'order_date'  => $request->order_date,
         'status'      => $newStatus,
         'driver_id'   => $request->driver_id,
@@ -336,7 +338,7 @@ class OrderController extends Controller
         'customer',
         'product',
         'driver',
-        'payment'
+        'payments'
     ]);
 
     $pdf = Pdf::loadView(

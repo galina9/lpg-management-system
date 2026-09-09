@@ -79,7 +79,7 @@
                      <td>{{ $product->gas_type }}</td>
                      <td>{{ $product->unit }}</td>
                      <td>{{ number_format($product->purchase_price,2) }}AMD</td>
-                     <td>{{ number_format($product->purchase_price,2) }} AMD</td>
+                    <td>{{ number_format($product->sale_price, 2) }} AMD</td>
                      <td>@if($product->stock <= 10)
                         <span class="badge bg-danger">
                         {{ $product->stock }}

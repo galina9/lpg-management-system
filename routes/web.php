@@ -66,8 +66,7 @@ Route::middleware(['auth','locale',])->group(function () {
     Route::get('/orders/{order}/excel',
         [OrderController::class, 'exportExcel'])
         ->name('orders.excel');
-
-     /*
+/*
 |--------------------------------------------------------------------------
 | Notifications
 |--------------------------------------------------------------------------
@@ -87,45 +86,79 @@ Route::get('/notifications/latest', function () {
             return [
                 'id' => $notification->id,
 
-                'title' => $notification->data['title'] ?? 'Order Status Changed',
+                'title' =>
+                    $notification->data['title']
+                    ?? 'Order Status Changed',
 
-                'message' => $notification->data['message'] ?? '',
+                'message' =>
+                    $notification->data['message']
+                    ?? '',
 
-                'order_id' => $notification->data['order_id'] ?? null,
+                'order_id' =>
+                    $notification->data['order_id']
+                    ?? null,
 
-                'order_number' => $notification->data['order_number'] ?? '',
+                'order_number' =>
+                    $notification->data['order_number']
+                    ?? '',
 
-                'driver_name' => $notification->data['driver_name'] ?? '',
+                'driver_name' =>
+                    $notification->data['driver_name']
+                    ?? '',
 
-                'old_status' => $notification->data['old_status'] ?? '',
+                'old_status' =>
+                    $notification->data['old_status']
+                    ?? '',
 
-                'new_status' => $notification->data['new_status'] ?? '',
+                'new_status' =>
+                    $notification->data['new_status']
+                    ?? '',
 
-                'created_at' => $notification->created_at->diffForHumans(),
+                'created_at' =>
+                    $notification->created_at
+                        ->diffForHumans(),
             ];
 
         });
 
     return response()->json([
+
         'notifications' => $notifications,
-        'unread_count' => $user->unreadNotifications()->count(),
+
+        'unread_count' =>
+            $user->unreadNotifications()->count(),
+
     ]);
 
 })->name('notifications.latest');
 
-Route::delete('/notifications/{notification}', function ($notification) {
 
-    $user = auth()->user();
+/*
+|--------------------------------------------------------------------------
+| Delete notification
+|--------------------------------------------------------------------------
+|
+| Notification-ը ջնջվում է միայն × կոճակով
+|
+*/
 
-    $user->notifications()
-        ->where('id', $notification)
-        ->delete();
+Route::delete(
+    '/notifications/{notification}',
+    function ($notification) {
 
-    return response()->json([
-        'success' => true
-    ]);
+        $user = auth()->user();
 
-})->name('notifications.delete');
+        $user->notifications()
+            ->where('id', $notification)
+            ->delete();
+
+        return response()->json([
+            'success' => true
+        ]);
+
+    }
+)->name('notifications.delete');
+
 /*
 |--------------------------------------------------------------------------
 | Mark notification as read
